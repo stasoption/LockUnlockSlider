@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Customslider.iml" filepath="$PROJECT_DIR$/Customslider.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LockUnlockSlider.iml" filepath="$PROJECT_DIR$/LockUnlockSlider.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
