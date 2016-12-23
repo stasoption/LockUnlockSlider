@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         mLockUnlockSlider.setBackgroundWhenLock(45, Color.parseColor("#929292"), 1, Color.GRAY); // set background for screens when lock or unlock. parameters:
         mLockUnlockSlider.setBackgroundWhenUnLock(45, Color.parseColor("#7ed321"), 1, Color.GRAY); // (angle of the shape, color of background, width of border, color of border)
         mLockUnlockSlider.setThumbAngle(45); // angle of the thumb
-        mLockUnlockSlider.setTextWhenLock("Unock"); // text status of slider when lock
+        mLockUnlockSlider.setTextWhenLock("Unolck"); // text status of slider when lock
         mLockUnlockSlider.setTextWhenUnLock("Lock"); // text status of slider when unlock
         mLockUnlockSlider.setTextSize(16); // text size on slider
         mLockUnlockSlider.setTextColor(Color.parseColor("#FAF0E6")); //text color on slider
