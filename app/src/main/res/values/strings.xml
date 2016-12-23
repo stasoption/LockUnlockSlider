@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">LockUnlockSlider</string>
+
+
+    <string name="unlock_instructions">Slide to unlock</string>
+    <string name="unlock_locked">Locked</string>
+    <string name="unlock_unlocked">Unlocked</string>
+    <string name="unlock_thumb">Move this thumb</string>
+
+</resources>
