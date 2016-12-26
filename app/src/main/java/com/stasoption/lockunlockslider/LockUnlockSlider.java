@@ -12,11 +12,12 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.os.Build;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -55,7 +56,7 @@ public class LockUnlockSlider extends RelativeLayout {
 
 
     private TransitionDrawable transition;
-    private View mViewBackground;
+    private RelativeLayout mViewBackground;
     private SeekBar mSlider;
     private TextView mTextHint;
     private int int_slider_progress;
@@ -168,6 +169,20 @@ public class LockUnlockSlider extends RelativeLayout {
         //parameters for the text on the slider
         initTextOnSliderParam();
         //parameters for slider
+
+        // Retrieve layout elements
+        mViewBackground = (RelativeLayout) findViewById(R.id.view_background);
+        mViewBackground.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        //slider init
+        mSlider = (SeekBar) findViewById(R.id.seekBar);
+        //set max value
+        mSlider.setMax(MAX_VALUE);
+        //set progress when firs time
+        checkPrimarySliderProgress();
+        //set the transparent background
+        setSeekBarBackgroundTransparent();
+
+
         setSliderParameters();
     }
 
@@ -198,23 +213,15 @@ public class LockUnlockSlider extends RelativeLayout {
      * SET MAIN THE SLIDER LOGIC
      */
     private void setSliderParameters(){
-        // Retrieve layout elements
-        mViewBackground = (RelativeLayout)findViewById(R.id.view_background);
-        mViewBackground.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        //slider init
-        mSlider = (SeekBar) findViewById(R.id.seekBar);
-        //set max value
-        mSlider.setMax(MAX_VALUE);
+
         //set padding (default 0,0,0,0)
-        setPaddingInSlider();
-        //set the transparent background
-        setSeekBarBackgroundTransparent();
-        //set the slider thumb
-        changeSeekBarThumb();
+        setSliderPadding();
+
         //set background when the slider progress 0 or 100
         setBackgroundWhenStatic();
-        //set progress when firs time
-        checkPrimarySliderProgress();
+        //set the slider thumb
+        changeSeekBarThumb();
+
         mSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -225,15 +232,20 @@ public class LockUnlockSlider extends RelativeLayout {
                             SLIDER_STATUS = false;
                             if (listener != null) listener.onLock();
                             break;
+
                         case MAX_VALUE:
                             SLIDER_STATUS = true;
                             if (listener != null) listener.onUnlock();
                             break;
                     }
-                   //update slider(recursion)
-                   setSliderParameters();
+
+                   //set padding (default 0,0,0,0)
+                   setSliderPadding();
+                   //set background when the slider progress 0 or 100
                    setBackgroundWhenStatic();
-                }
+                   //set the slider thumb
+                   changeSeekBarThumb();
+               }
             }
 
             @Override
@@ -252,6 +264,64 @@ public class LockUnlockSlider extends RelativeLayout {
             }
         });
     }
+
+    /**
+     * SET PADDING
+     */
+    private void setSliderPadding(){
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN) {
+            mSlider.setPadding(dpToPx(0),dpToPx(0),dpToPx(60),dpToPx(0)); //devices with jelly bin have a big, right padding?!
+        } else {
+            mSlider.setPadding(dpToPx(0),dpToPx(0),dpToPx(0),dpToPx(0));
+        }
+    }
+
+
+
+    /**
+     * CHANGE THE THUMB IMAGE WHEN THE PROGRESS 100% OR 0%
+     */
+    private void changeSeekBarThumb(){
+        //circle
+        GradientDrawable gd = new GradientDrawable();
+
+        gd.setColors(new int[]{ THUMB_COLOR_1, THUMB_COLOR_2 });
+
+        // Set the GradientDrawable gradient type linear gradient
+        gd.setGradientType(GradientDrawable.RADIAL_GRADIENT);
+        // Set GradientDrawable shape is a rectangle
+        gd.setShape(GradientDrawable.RECTANGLE);
+        //form of shape
+        gd.setCornerRadius(ANGLE);
+        // Set N pixels width solid blue color border
+        gd.setStroke(1, Color.GRAY);
+        // Set GradientDrawable width and height in pixels
+        gd.setSize(dpToPx(SLIDER_WIDTH), dpToPx(SLIDER_HEIGHT));
+        // Set gradient radius
+        gd.setGradientRadius(dpToPx(100));
+        // Set gravity
+        gd.setGradientCenter(0, 0);
+
+        // set the thumb icon by bool status
+        Bitmap mTHUMB_BITMAP;
+        if(SLIDER_STATUS){
+            mTHUMB_BITMAP = ((BitmapDrawable) THUMB_FORWARD).getBitmap();
+        }else {
+            mTHUMB_BITMAP = ((BitmapDrawable) THUMB_BACK).getBitmap();
+        }
+        //result thumb drawable
+        Drawable thumb = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(mTHUMB_BITMAP, dpToPx(24), dpToPx(24), true));
+        InsetDrawable thumb_with_padding= new InsetDrawable(thumb,dpToPx(15),dpToPx(15),dpToPx(15),dpToPx(15));
+        //layer
+        LayerDrawable mylayer = new LayerDrawable(new Drawable[]{gd,thumb_with_padding});
+
+        mSlider.getThumb().setBounds(0, 0, mylayer.getIntrinsicWidth(), mylayer.getIntrinsicHeight());
+        //set the thumb to slider
+
+        mSlider.setThumb(mylayer);
+        mSlider.setThumbOffset(0);
+    }
+
 
     /**
      * SET PROGRESS WHEN THE SLIDER INITS FIRST TIME
@@ -353,47 +423,6 @@ public class LockUnlockSlider extends RelativeLayout {
     }
 
     /**
-     * CHANGE THE THUMB IMAGE WHEN THE PROGRESS 100% OR 0%
-     */
-    private void changeSeekBarThumb(){
-        //circle
-        GradientDrawable gd = new GradientDrawable();
-        gd.setColors(new int[]{
-                THUMB_COLOR_1, THUMB_COLOR_2
-        });
-        // Set the GradientDrawable gradient type linear gradient
-        gd.setGradientType(GradientDrawable.RADIAL_GRADIENT);
-        // Set GradientDrawable shape is a rectangle
-        gd.setShape(GradientDrawable.RECTANGLE);
-        //form of shape
-        gd.setCornerRadius(ANGLE);
-        // Set N pixels width solid blue color border
-        gd.setStroke(1, Color.GRAY);
-        // Set GradientDrawable width and height in pixels
-        gd.setSize(dpToPx(SLIDER_WIDTH), dpToPx(SLIDER_HEIGHT));
-        // Set gradient radius
-        gd.setGradientRadius(dpToPx(100));
-        //Set gravity
-        gd.setGradientCenter(0, 0);
-        //set the thumb icon by bool status
-        Bitmap mTHUMB_BITMAP;
-        if(SLIDER_STATUS){
-            mTHUMB_BITMAP = ((BitmapDrawable) THUMB_FORWARD).getBitmap();
-        }else {
-            mTHUMB_BITMAP = ((BitmapDrawable) THUMB_BACK).getBitmap();
-        }
-        //result thumb drawable
-        Drawable thumb = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(mTHUMB_BITMAP, dpToPx(24), dpToPx(24), true));
-        InsetDrawable thumb_with_padding= new InsetDrawable(thumb,dpToPx(15),dpToPx(15),dpToPx(15),dpToPx(15));
-        //layer
-        LayerDrawable mylayer = new LayerDrawable(new Drawable[]{gd,thumb_with_padding});
-        mylayer.setBounds(0, 0, mylayer.getIntrinsicWidth(), mylayer.getIntrinsicHeight());
-        //set the thumb to slider
-        mSlider.setThumb(mylayer);
-        mSlider.setThumbOffset(0);
-    }
-
-    /**
      * Create the shape for setting a backgrounds
      * @param radius an angle of ste shape (default 45)
      * @param body_color background of the shape
@@ -403,7 +432,7 @@ public class LockUnlockSlider extends RelativeLayout {
      */
     private Drawable createDrawableForBackground(int radius, int body_color, int stroke_weight, int stroke_color){
         GradientDrawable shape = new GradientDrawable();
-        shape.setSize(dpToPx(SLIDER_WIDTH), dpToPx(SLIDER_HEIGHT));
+//        shape.setSize(dpToPx(SLIDER_WIDTH), dpToPx(SLIDER_HEIGHT));
         shape.setShape(GradientDrawable.RECTANGLE);
         shape.setCornerRadius(radius);
         shape.setColor(body_color);
@@ -427,13 +456,6 @@ public class LockUnlockSlider extends RelativeLayout {
     private int dpToPx(int dp)  {
         float density = getResources().getDisplayMetrics().density;
         return Math.round((float)dp * density);
-    }
-
-    /**
-     * SET PADDING
-     */
-    private void setPaddingInSlider(){
-        mSlider.setPadding(dpToPx(0),dpToPx(0),dpToPx(0),dpToPx(0));
     }
 
 
