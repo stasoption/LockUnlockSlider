@@ -19,6 +19,19 @@ public class MainActivity extends AppCompatActivity {
         //init the slider
         LockUnlockSlider mLockUnlockSlider = (LockUnlockSlider)findViewById(R.id.lockUnlockSlider);
 
+        //interface for our slider
+        mLockUnlockSlider.setOnLockUnlockListener(new LockUnlockSlider.OnLockUnlockListener() {
+            @Override
+            public void onLock() {
+                Toast.makeText(MainActivity.this, "Lock", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onUnlock() {
+                Toast.makeText(MainActivity.this, "UnLock", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         //here, we can set some parameters (OPTIONAL) for slider
         mLockUnlockSlider.setSliderStatus(INIT_STATUS_FOR_SLIDER); //primary bool param (true/false)
         mLockUnlockSlider.setThumbHeight(60); //thumb height
@@ -33,21 +46,12 @@ public class MainActivity extends AppCompatActivity {
         mLockUnlockSlider.setTextColor(Color.parseColor("#FAF0E6")); //text color on slider
         mLockUnlockSlider.setImageThumbWhenLock(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_lock_open_black_24dp, null)); //set icon for the thumb. param:--
         mLockUnlockSlider.setImageThumbWhenUnLock(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_lock_outline_black_24dp, null));//--()
+
+        
         //start the slider
         mLockUnlockSlider.initialize(); //very important parameter!
 
-        //interface for our slider
-        mLockUnlockSlider.setOnLockUnlockListener(new LockUnlockSlider.OnLockUnlockListener() {
-            @Override
-            public void onLock() {
-                Toast.makeText(MainActivity.this, "Lock", Toast.LENGTH_SHORT).show();
-            }
 
-            @Override
-            public void onUnlock() {
-                Toast.makeText(MainActivity.this, "UnLock", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
 
