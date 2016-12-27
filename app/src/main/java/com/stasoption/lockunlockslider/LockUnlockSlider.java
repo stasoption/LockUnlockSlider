@@ -18,6 +18,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -33,13 +34,13 @@ public class LockUnlockSlider extends RelativeLayout {
     private RelativeLayout mViewBackground;
     private SeekBar mSlider;
     private TextView mTextHint;
-    //value for thumb animation
-    private int int_slider_progress;
     //default global values for slider
     private static final int MAX_VALUE = 1000;
     private static final int ANIM_DURATION = 400;
     //status of the slider
     private boolean SLIDER_STATUS;
+    //value for thumb animation
+    private int SLIDER_PROGRESS;
     //thumb metrics
     private int THUMB_ANGLE, THUMB_HEIGHT, THUMB_WIDTH;
     //thumb a shape and a background (gradient)
@@ -54,6 +55,8 @@ public class LockUnlockSlider extends RelativeLayout {
     private int BACKGROUND_ANGLE_WHEN_UNLOCK, BACKGROUND_COLOR_WHEN_UNLOCK, STROKE_WIDTH_WHEN_UNLOCK, STROKE_COLOR_WHEN_UNLOCK;
     //for the slider animation when changing the status
     private TransitionDrawable transition;
+
+    private ValueAnimator mAnimator;
 
     /**
      * CONSTRUCTORS
@@ -282,7 +285,7 @@ public class LockUnlockSlider extends RelativeLayout {
                 //set animation for changing background, when the progress < 50%
                 reverseTransitionDrawableByStatus();
                 //start/stop the animation
-                setAnimation();
+                runThumbAnimation();
             }
         });
     }
@@ -332,8 +335,12 @@ public class LockUnlockSlider extends RelativeLayout {
         //result thumb drawable
         Drawable thumb = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(mTHUMB_BITMAP, dpToPx(24), dpToPx(24), true));
         InsetDrawable thumb_with_padding= new InsetDrawable(thumb,dpToPx(15),dpToPx(15),dpToPx(15),dpToPx(15));
-        //layer
-        return new LayerDrawable(new Drawable[]{gd,thumb_with_padding});
+        //show icon in shape. Just in the versoin of android > 4.1
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
+            return new LayerDrawable(new Drawable[]{gd,thumb_with_padding});
+        }else {
+            return new LayerDrawable(new Drawable[]{gd});
+        }
     }
 
 
@@ -395,32 +402,37 @@ public class LockUnlockSlider extends RelativeLayout {
     /**
      * SET THE ANIMATION PARAMETERS FOR THUMB
      */
-    private void setAnimation(){
-        int duration = ANIM_DURATION;
-        int_slider_progress = mSlider.getProgress();
+    private void runThumbAnimation(){
 
-        if(int_slider_progress > MAX_VALUE/2){
-            ValueAnimator anim = ValueAnimator.ofInt(int_slider_progress, mSlider.getMax());
-            anim.setDuration(duration);
-            anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        if (mAnimator!=null) mAnimator.cancel();
+
+        int duration = ANIM_DURATION;
+        SLIDER_PROGRESS = mSlider.getProgress();
+
+        if(SLIDER_PROGRESS > MAX_VALUE/2){
+            mAnimator = ValueAnimator.ofInt(SLIDER_PROGRESS, mSlider.getMax());
+            mAnimator.setDuration(duration);
+            mAnimator.setInterpolator(new AccelerateInterpolator());
+            mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    int_slider_progress = (Integer) animation.getAnimatedValue();
-                    mSlider.setProgress(int_slider_progress);
+                    SLIDER_PROGRESS = (Integer) animation.getAnimatedValue();
+                    mSlider.setProgress(SLIDER_PROGRESS);
                 }
             });
-            anim.start();
+            mAnimator.start();
         }else {
-            ValueAnimator anim = ValueAnimator.ofInt(int_slider_progress,  0);
-            anim.setDuration(duration);
-            anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            mAnimator = ValueAnimator.ofInt(SLIDER_PROGRESS,  0);
+            mAnimator.setDuration(duration);
+            mAnimator.setInterpolator(new AccelerateInterpolator());
+            mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    int_slider_progress = (Integer) animation.getAnimatedValue();
-                    mSlider.setProgress(int_slider_progress);
+                    SLIDER_PROGRESS = (Integer) animation.getAnimatedValue();
+                    mSlider.setProgress(SLIDER_PROGRESS);
                 }
             });
-            anim.start();
+            mAnimator.start();
         }
     }
 
