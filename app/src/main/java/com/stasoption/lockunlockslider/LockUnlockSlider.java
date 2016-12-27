@@ -27,42 +27,33 @@ import android.widget.TextView;
  */
 
 public class LockUnlockSlider extends RelativeLayout {
-
+    //interface for listening of the slider status
     private OnLockUnlockListener listener = null;
-
-    //status of the slider
-    private boolean SLIDER_STATUS;
-    //metrics
-    private int SLIDER_HEIGHT;
-    private int SLIDER_WIDTH;
-
-    private int ANGLE;
-
-    private String TEXT_FOR_SLIDER_WHEN_UNLOCK;
-    private String TEXT_FOR_SLIDER_WHEN_LOCK;
-    private int TEXT_SIZE;
-    private int TEXT_COLOR;
-
-    private Drawable BACKGROUND_WHEN_LOCK;
-    private Drawable BACKGROUND_WHEN_UNLOCK;
-    private int BACKGROUND_ANGLE_WHEN_LOCK, BACKGROUND_COLOR_WHEN_LOCK, STROKE_WIDTH_WHEN_LOCK, STROKE_COLOR_WHEN_LOCK;
-    private int BACKGROUND_ANGLE_WHEN_UNLOCK, BACKGROUND_COLOR_WHEN_UNLOCK, STROKE_WIDTH_WHEN_UNLOCK, STROKE_COLOR_WHEN_UNLOCK;
-
-
-    private Drawable THUMB_FORWARD;
-    private Drawable THUMB_BACK;
-    private int THUMB_COLOR_1;
-    private int THUMB_COLOR_2;
-
-    private TransitionDrawable transition;
+    //slider views
     private RelativeLayout mViewBackground;
     private SeekBar mSlider;
     private TextView mTextHint;
+    //value for thumb animation
     private int int_slider_progress;
-
+    //default global values for slider
     private static final int MAX_VALUE = 1000;
     private static final int ANIM_DURATION = 400;
-
+    //status of the slider
+    private boolean SLIDER_STATUS;
+    //thumb metrics
+    private int THUMB_ANGLE, THUMB_HEIGHT, THUMB_WIDTH;
+    //thumb a shape and a background (gradient)
+    private Drawable THUMB_FORWARD, THUMB_BACK;
+    private int THUMB_COLOR_1 ,THUMB_COLOR_2;
+    //text view on the slider
+    private String TEXT_FOR_SLIDER_WHEN_UNLOCK, TEXT_FOR_SLIDER_WHEN_LOCK;
+    private int TEXT_SIZE, TEXT_COLOR;
+    //for the slider background
+    private Drawable BACKGROUND_WHEN_LOCK, BACKGROUND_WHEN_UNLOCK;
+    private int BACKGROUND_ANGLE_WHEN_LOCK, BACKGROUND_COLOR_WHEN_LOCK, STROKE_WIDTH_WHEN_LOCK, STROKE_COLOR_WHEN_LOCK;
+    private int BACKGROUND_ANGLE_WHEN_UNLOCK, BACKGROUND_COLOR_WHEN_UNLOCK, STROKE_WIDTH_WHEN_UNLOCK, STROKE_COLOR_WHEN_UNLOCK;
+    //for the slider animation when changing the status
+    private TransitionDrawable transition;
 
     /**
      * CONSTRUCTORS
@@ -92,11 +83,11 @@ public class LockUnlockSlider extends RelativeLayout {
      * DEFAULT INITIALIZED VIEWS
      */
     private void setDefaultParametersForSlider(){
-//         setting parameters for slider
-        SLIDER_HEIGHT = 60;
-        SLIDER_WIDTH = 60;
+        // setting parameters for slider
+        THUMB_HEIGHT = 60;
+        THUMB_WIDTH = 60;
         //default form for shape
-        ANGLE = dpToPx(45);
+        THUMB_ANGLE = dpToPx(45);
         //default text on the slider
         TEXT_FOR_SLIDER_WHEN_UNLOCK = "Lock";
         TEXT_FOR_SLIDER_WHEN_LOCK = "Unlock";
@@ -131,11 +122,11 @@ public class LockUnlockSlider extends RelativeLayout {
     }
 
     public void setThumbWidth(int width){
-        SLIDER_WIDTH = width;
+        THUMB_WIDTH = width;
     }
 
     public void setThumbHeight(int height){
-        SLIDER_HEIGHT = height;
+        THUMB_HEIGHT = height;
     }
 
     public void setGradientForThumb(int color_from, int color_to){
@@ -170,7 +161,7 @@ public class LockUnlockSlider extends RelativeLayout {
     }
 
     public void setThumbAngle(int thumb_angle){
-        ANGLE = dpToPx(thumb_angle);
+        THUMB_ANGLE = dpToPx(thumb_angle);
     }
 
     public void setTextWhenLock(String text){
@@ -319,11 +310,11 @@ public class LockUnlockSlider extends RelativeLayout {
         // Set GradientDrawable shape is a rectangle
         gd.setShape(GradientDrawable.RECTANGLE);
         //form of shape
-        gd.setCornerRadius(ANGLE);
+        gd.setCornerRadius(THUMB_ANGLE);
         // Set N pixels width solid blue color border
         gd.setStroke(1, Color.GRAY);
         // Set GradientDrawable width and height in pixels
-        gd.setSize(dpToPx(SLIDER_WIDTH), dpToPx(SLIDER_HEIGHT));
+        gd.setSize(dpToPx(THUMB_WIDTH), dpToPx(THUMB_HEIGHT));
         // Set gradient radius
         gd.setGradientRadius(dpToPx(100));
         // Set gravity
@@ -363,7 +354,7 @@ public class LockUnlockSlider extends RelativeLayout {
         mTextHint.setVisibility(View.VISIBLE);
         BACKGROUND_WHEN_LOCK = createDrawableForBackground(BACKGROUND_ANGLE_WHEN_LOCK, BACKGROUND_COLOR_WHEN_LOCK, STROKE_WIDTH_WHEN_LOCK, STROKE_COLOR_WHEN_LOCK);
         BACKGROUND_WHEN_UNLOCK = createDrawableForBackground(BACKGROUND_ANGLE_WHEN_UNLOCK, BACKGROUND_COLOR_WHEN_UNLOCK, STROKE_WIDTH_WHEN_UNLOCK, STROKE_COLOR_WHEN_UNLOCK);
-        
+
         if(SLIDER_STATUS) {
             mTextHint.setText(TEXT_FOR_SLIDER_WHEN_UNLOCK);
             setBackgroundStatic(BACKGROUND_WHEN_UNLOCK);
@@ -437,10 +428,10 @@ public class LockUnlockSlider extends RelativeLayout {
      */
     private void setSeekBarBackgroundTransparent(){
         //progress
-        Drawable shape = createDrawableForBackground(ANGLE, Color.TRANSPARENT, 0, Color.TRANSPARENT);
+        Drawable shape = createDrawableForBackground(THUMB_ANGLE, Color.TRANSPARENT, 0, Color.TRANSPARENT);
         ClipDrawable clip = new ClipDrawable(shape, Gravity.LEFT, ClipDrawable.HORIZONTAL);
         //background
-        Drawable shape1 = createDrawableForBackground(ANGLE, Color.TRANSPARENT, 0, Color.TRANSPARENT);
+        Drawable shape1 = createDrawableForBackground(THUMB_ANGLE, Color.TRANSPARENT, 0, Color.TRANSPARENT);
         //ProgressDrawable
         LayerDrawable mylayer = new LayerDrawable(new Drawable[]{shape1,clip});
         mSlider.setProgressDrawable(mylayer);
@@ -456,7 +447,7 @@ public class LockUnlockSlider extends RelativeLayout {
      */
     private Drawable createDrawableForBackground(int radius, int body_color, int stroke_weight, int stroke_color){
         GradientDrawable shape = new GradientDrawable();
-//        shape.setSize(dpToPx(SLIDER_WIDTH), dpToPx(SLIDER_HEIGHT));
+//        shape.setSize(dpToPx(THUMB_WIDTH), dpToPx(THUMB_HEIGHT));
         shape.setShape(GradientDrawable.RECTANGLE);
         shape.setCornerRadius(radius);
         shape.setColor(body_color);
