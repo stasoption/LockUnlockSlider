@@ -35,7 +35,7 @@ public class LockUnlockSlider extends RelativeLayout {
     private SeekBar mSlider;
     private TextView mTextHint;
     //default global values for slider
-    private static final int MAX_VALUE = 1000;
+    private static final int MAX_VALUE = 10000;
     private static final int ANIM_DURATION = 400;
     //status of the slider
     private boolean SLIDER_STATUS;
