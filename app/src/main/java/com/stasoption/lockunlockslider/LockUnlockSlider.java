@@ -43,8 +43,8 @@ public class LockUnlockSlider extends RelativeLayout {
     private int TEXT_SIZE;
     private int TEXT_COLOR;
 
-    private Drawable BACKGROUN_WHEN_LOCK;
-    private Drawable BACKGROUN_WHEN_UNLOCK;
+    private Drawable BACKGROUND_WHEN_LOCK;
+    private Drawable BACKGROUND_WHEN_UNLOCK;
     private int BACKGROUND_ANGLE_WHEN_LOCK, BACKGROUND_COLOR_WHEN_LOCK, STROKE_WIDTH_WHEN_LOCK, STROKE_COLOR_WHEN_LOCK;
     private int BACKGROUND_ANGLE_WHEN_UNLOCK, BACKGROUND_COLOR_WHEN_UNLOCK, STROKE_WIDTH_WHEN_UNLOCK, STROKE_COLOR_WHEN_UNLOCK;
 
@@ -53,8 +53,6 @@ public class LockUnlockSlider extends RelativeLayout {
     private Drawable THUMB_BACK;
     private int THUMB_COLOR_1;
     private int THUMB_COLOR_2;
-
-
 
     private TransitionDrawable transition;
     private RelativeLayout mViewBackground;
@@ -110,14 +108,13 @@ public class LockUnlockSlider extends RelativeLayout {
         BACKGROUND_COLOR_WHEN_LOCK = Color.GRAY;
         STROKE_WIDTH_WHEN_LOCK = 1;
         STROKE_COLOR_WHEN_LOCK = Color.GRAY;
-        BACKGROUN_WHEN_LOCK = createDrawableForBackground(BACKGROUND_ANGLE_WHEN_LOCK, BACKGROUND_COLOR_WHEN_LOCK, STROKE_WIDTH_WHEN_LOCK, STROKE_COLOR_WHEN_LOCK);
+        BACKGROUND_WHEN_LOCK = createDrawableForBackground(BACKGROUND_ANGLE_WHEN_LOCK, BACKGROUND_COLOR_WHEN_LOCK, STROKE_WIDTH_WHEN_LOCK, STROKE_COLOR_WHEN_LOCK);
 
         BACKGROUND_ANGLE_WHEN_UNLOCK = dpToPx(45);
         BACKGROUND_COLOR_WHEN_UNLOCK = Color.GREEN;
         STROKE_WIDTH_WHEN_UNLOCK = 1;
         STROKE_COLOR_WHEN_UNLOCK = Color.GRAY;
-        BACKGROUN_WHEN_UNLOCK = createDrawableForBackground(BACKGROUND_ANGLE_WHEN_UNLOCK, BACKGROUND_COLOR_WHEN_UNLOCK, STROKE_WIDTH_WHEN_UNLOCK, STROKE_COLOR_WHEN_UNLOCK);
-
+        BACKGROUND_WHEN_UNLOCK = createDrawableForBackground(BACKGROUND_ANGLE_WHEN_UNLOCK, BACKGROUND_COLOR_WHEN_UNLOCK, STROKE_WIDTH_WHEN_UNLOCK, STROKE_COLOR_WHEN_UNLOCK);
 
         //default thumb
         THUMB_FORWARD =  ResourcesCompat.getDrawable(getResources(),R.drawable.ic_lock_open_black_24dp, null);
@@ -151,7 +148,7 @@ public class LockUnlockSlider extends RelativeLayout {
         BACKGROUND_COLOR_WHEN_LOCK = background_color;
         STROKE_WIDTH_WHEN_LOCK = stroke_weight;
         STROKE_COLOR_WHEN_LOCK = stroke_color;
-        BACKGROUN_WHEN_LOCK = createDrawableForBackground(
+        BACKGROUND_WHEN_LOCK = createDrawableForBackground(
                 dpToPx(BACKGROUND_ANGLE_WHEN_LOCK),
                 BACKGROUND_COLOR_WHEN_LOCK,
                 STROKE_WIDTH_WHEN_LOCK,
@@ -164,7 +161,7 @@ public class LockUnlockSlider extends RelativeLayout {
         BACKGROUND_COLOR_WHEN_UNLOCK = background_color;
         STROKE_WIDTH_WHEN_UNLOCK = stroke_weight;
         STROKE_COLOR_WHEN_UNLOCK = stroke_color;
-        BACKGROUN_WHEN_UNLOCK = createDrawableForBackground(
+        BACKGROUND_WHEN_UNLOCK = createDrawableForBackground(
                 dpToPx(BACKGROUND_ANGLE_WHEN_UNLOCK),
                 BACKGROUND_COLOR_WHEN_UNLOCK,
                 STROKE_WIDTH_WHEN_UNLOCK,
@@ -205,7 +202,6 @@ public class LockUnlockSlider extends RelativeLayout {
     }
 
 
-
     /**
      * INIT THE SLIDER
      * @param context
@@ -226,7 +222,6 @@ public class LockUnlockSlider extends RelativeLayout {
         checkPrimarySliderProgress();
         //set the transparent background
         setSeekBarBackgroundTransparent();
-
         //default values for slider
         setDefaultParametersForSlider();
     }
@@ -240,7 +235,6 @@ public class LockUnlockSlider extends RelativeLayout {
         //parameters for slider
         setSliderParameters();
     }
-
 
     /**
      * TEXT ON SLIDER (LOCK / UNLOCK)
@@ -281,9 +275,6 @@ public class LockUnlockSlider extends RelativeLayout {
                    }else {
                        setBackgroundWhenStatic();
                    }
-
-
-
                }
             }
 
@@ -310,10 +301,9 @@ public class LockUnlockSlider extends RelativeLayout {
      * CHANGE THE THUMB IMAGE WHEN THE PROGRESS 100% OR 0%
      */
     private void upDateSlider(){
-
         //set background when the slider progress 0 or 100
         setBackgroundWhenStatic();
-
+        //set padding
         mSlider.setPadding(dpToPx(0),dpToPx(0),dpToPx(0),dpToPx(0));
         // /set the thumb to slider
         mSlider.setThumb(changeThumb());
@@ -323,9 +313,7 @@ public class LockUnlockSlider extends RelativeLayout {
     private LayerDrawable changeThumb(){
         //circle
         GradientDrawable gd = new GradientDrawable();
-
         gd.setColors(new int[]{ THUMB_COLOR_1, THUMB_COLOR_2 });
-
         // Set the GradientDrawable gradient type linear gradient
         gd.setGradientType(GradientDrawable.RADIAL_GRADIENT);
         // Set GradientDrawable shape is a rectangle
@@ -348,6 +336,7 @@ public class LockUnlockSlider extends RelativeLayout {
         }else {
             mTHUMB_BITMAP = ((BitmapDrawable) THUMB_BACK).getBitmap();
         }
+
         //result thumb drawable
         Drawable thumb = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(mTHUMB_BITMAP, dpToPx(24), dpToPx(24), true));
         InsetDrawable thumb_with_padding= new InsetDrawable(thumb,dpToPx(15),dpToPx(15),dpToPx(15),dpToPx(15));
@@ -372,15 +361,15 @@ public class LockUnlockSlider extends RelativeLayout {
      */
     private void setBackgroundWhenStatic(){
         mTextHint.setVisibility(View.VISIBLE);
-        BACKGROUN_WHEN_LOCK = createDrawableForBackground(BACKGROUND_ANGLE_WHEN_LOCK, BACKGROUND_COLOR_WHEN_LOCK, STROKE_WIDTH_WHEN_LOCK, STROKE_COLOR_WHEN_LOCK);
-        BACKGROUN_WHEN_UNLOCK = createDrawableForBackground(BACKGROUND_ANGLE_WHEN_UNLOCK, BACKGROUND_COLOR_WHEN_UNLOCK, STROKE_WIDTH_WHEN_UNLOCK, STROKE_COLOR_WHEN_UNLOCK);
-
+        BACKGROUND_WHEN_LOCK = createDrawableForBackground(BACKGROUND_ANGLE_WHEN_LOCK, BACKGROUND_COLOR_WHEN_LOCK, STROKE_WIDTH_WHEN_LOCK, STROKE_COLOR_WHEN_LOCK);
+        BACKGROUND_WHEN_UNLOCK = createDrawableForBackground(BACKGROUND_ANGLE_WHEN_UNLOCK, BACKGROUND_COLOR_WHEN_UNLOCK, STROKE_WIDTH_WHEN_UNLOCK, STROKE_COLOR_WHEN_UNLOCK);
+        
         if(SLIDER_STATUS) {
             mTextHint.setText(TEXT_FOR_SLIDER_WHEN_UNLOCK);
-            setBackgroundStatic(BACKGROUN_WHEN_UNLOCK);
+            setBackgroundStatic(BACKGROUND_WHEN_UNLOCK);
         }else {
             mTextHint.setText(TEXT_FOR_SLIDER_WHEN_LOCK);
-            setBackgroundStatic(BACKGROUN_WHEN_LOCK);
+            setBackgroundStatic(BACKGROUND_WHEN_LOCK);
         }
     }
 
@@ -389,11 +378,11 @@ public class LockUnlockSlider extends RelativeLayout {
      */
     private void startTransitionDrawableByStatus() {
         if (SLIDER_STATUS) {
-            transition = new TransitionDrawable(new Drawable[]{BACKGROUN_WHEN_UNLOCK, BACKGROUN_WHEN_LOCK});
+            transition = new TransitionDrawable(new Drawable[]{BACKGROUND_WHEN_UNLOCK, BACKGROUND_WHEN_LOCK});
             mViewBackground.setBackground(transition);
             transition.startTransition(ANIM_DURATION);
         } else {
-            transition = new TransitionDrawable(new Drawable[]{BACKGROUN_WHEN_LOCK, BACKGROUN_WHEN_UNLOCK});
+            transition = new TransitionDrawable(new Drawable[]{BACKGROUND_WHEN_LOCK, BACKGROUND_WHEN_UNLOCK});
             mViewBackground.setBackground(transition);
             transition.startTransition(ANIM_DURATION);
         }
