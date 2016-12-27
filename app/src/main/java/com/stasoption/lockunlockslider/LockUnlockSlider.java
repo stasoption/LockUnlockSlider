@@ -119,6 +119,7 @@ public class LockUnlockSlider extends RelativeLayout {
      */
     public void setSliderStatus(boolean status) {
         SLIDER_STATUS = status;
+        checkPrimarySliderProgress();
     }
 
     public void setThumbWidth(int width){
