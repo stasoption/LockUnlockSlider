@@ -223,7 +223,6 @@ public class LockUnlockSlider extends RelativeLayout {
 
         // Retrieve layout elements
         mViewBackground = (RelativeLayout) findViewById(R.id.view_background);
-        mViewBackground.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         //slider primaryInit
         mSlider = (SeekBar) findViewById(R.id.seekBar);
         //set max value
