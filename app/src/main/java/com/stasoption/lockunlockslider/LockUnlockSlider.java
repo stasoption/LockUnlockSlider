@@ -30,6 +30,9 @@ import android.widget.TextView;
 public class LockUnlockSlider extends RelativeLayout {
     //interface for listening of the slider status
     private OnLockUnlockListener listener = null;
+    //for the slider animation when changing the status
+    private TransitionDrawable mTransitionForBackGround;
+    private ValueAnimator mAnimatorForThumb;
     //slider views
     private RelativeLayout mViewBackground;
     private SeekBar mSlider;
@@ -53,10 +56,6 @@ public class LockUnlockSlider extends RelativeLayout {
     private Drawable BACKGROUND_WHEN_LOCK, BACKGROUND_WHEN_UNLOCK;
     private int BACKGROUND_ANGLE_WHEN_LOCK, BACKGROUND_COLOR_WHEN_LOCK, STROKE_WIDTH_WHEN_LOCK, STROKE_COLOR_WHEN_LOCK;
     private int BACKGROUND_ANGLE_WHEN_UNLOCK, BACKGROUND_COLOR_WHEN_UNLOCK, STROKE_WIDTH_WHEN_UNLOCK, STROKE_COLOR_WHEN_UNLOCK;
-    //for the slider animation when changing the status
-    private TransitionDrawable transition;
-
-    private ValueAnimator mAnimator;
 
     /**
      * CONSTRUCTORS
@@ -111,8 +110,16 @@ public class LockUnlockSlider extends RelativeLayout {
         BACKGROUND_WHEN_UNLOCK = createDrawableForBackground(BACKGROUND_ANGLE_WHEN_UNLOCK, BACKGROUND_COLOR_WHEN_UNLOCK, STROKE_WIDTH_WHEN_UNLOCK, STROKE_COLOR_WHEN_UNLOCK);
 
         //default thumb
-        THUMB_FORWARD =  ResourcesCompat.getDrawable(getResources(),R.drawable.ic_lock_open_black_24dp, null);
-        THUMB_BACK =  ResourcesCompat.getDrawable(getResources(),R.drawable.ic_lock_outline_black_24dp, null);
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN){
+            THUMB_FORWARD = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_lock_open_black_24dp, null);;
+        }else {
+            THUMB_FORWARD = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_lock_lock, null);
+        }
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN){
+            THUMB_BACK = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_lock_outline_black_24dp, null);
+        }else {
+            THUMB_BACK = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_lock_lock, null);
+        }
         THUMB_COLOR_1 = Color.WHITE;
         THUMB_COLOR_2 = Color.GRAY;
     }
@@ -189,11 +196,19 @@ public class LockUnlockSlider extends RelativeLayout {
     }
 
     public void setImageThumbWhenLock(Drawable img){
-        THUMB_BACK = img;
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN){
+            THUMB_BACK = img;
+        }else {
+            THUMB_BACK = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_lock_lock, null);
+        }
     }
 
     public void setImageThumbWhenUnLock(Drawable img){
-        THUMB_FORWARD = img;
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN){
+            THUMB_BACK = img;
+        }else {
+            THUMB_BACK = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_lock_lock, null);
+        }
     }
 
 
@@ -336,11 +351,7 @@ public class LockUnlockSlider extends RelativeLayout {
         Drawable thumb = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(mTHUMB_BITMAP, dpToPx(24), dpToPx(24), true));
         InsetDrawable thumb_with_padding= new InsetDrawable(thumb,dpToPx(15),dpToPx(15),dpToPx(15),dpToPx(15));
         //show icon in shape. Just in the versoin of android > 4.1
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
-            return new LayerDrawable(new Drawable[]{gd,thumb_with_padding});
-        }else {
-            return new LayerDrawable(new Drawable[]{gd});
-        }
+        return new LayerDrawable(new Drawable[]{gd,thumb_with_padding});
     }
 
 
@@ -377,13 +388,13 @@ public class LockUnlockSlider extends RelativeLayout {
      */
     private void startTransitionDrawableByStatus() {
         if (SLIDER_STATUS) {
-            transition = new TransitionDrawable(new Drawable[]{BACKGROUND_WHEN_UNLOCK, BACKGROUND_WHEN_LOCK});
-            mViewBackground.setBackground(transition);
-            transition.startTransition(ANIM_DURATION);
+            mTransitionForBackGround = new TransitionDrawable(new Drawable[]{BACKGROUND_WHEN_UNLOCK, BACKGROUND_WHEN_LOCK});
+            mViewBackground.setBackground(mTransitionForBackGround);
+            mTransitionForBackGround.startTransition(ANIM_DURATION);
         } else {
-            transition = new TransitionDrawable(new Drawable[]{BACKGROUND_WHEN_LOCK, BACKGROUND_WHEN_UNLOCK});
-            mViewBackground.setBackground(transition);
-            transition.startTransition(ANIM_DURATION);
+            mTransitionForBackGround = new TransitionDrawable(new Drawable[]{BACKGROUND_WHEN_LOCK, BACKGROUND_WHEN_UNLOCK});
+            mViewBackground.setBackground(mTransitionForBackGround);
+            mTransitionForBackGround.startTransition(ANIM_DURATION);
         }
     }
 
@@ -392,10 +403,10 @@ public class LockUnlockSlider extends RelativeLayout {
      */
     private void reverseTransitionDrawableByStatus(){
         if(!SLIDER_STATUS && mSlider.getProgress() < MAX_VALUE/2){
-            transition.reverseTransition(ANIM_DURATION);
+            mTransitionForBackGround.reverseTransition(ANIM_DURATION);
         }
         else if(SLIDER_STATUS && mSlider.getProgress() > MAX_VALUE/2){
-            transition.reverseTransition(ANIM_DURATION);
+            mTransitionForBackGround.reverseTransition(ANIM_DURATION);
         }
     }
 
@@ -404,35 +415,35 @@ public class LockUnlockSlider extends RelativeLayout {
      */
     private void runThumbAnimation(){
 
-        if (mAnimator!=null) mAnimator.cancel();
+        if (mAnimatorForThumb !=null) mAnimatorForThumb.cancel();
 
         int duration = ANIM_DURATION;
         SLIDER_PROGRESS = mSlider.getProgress();
 
         if(SLIDER_PROGRESS > MAX_VALUE/2){
-            mAnimator = ValueAnimator.ofInt(SLIDER_PROGRESS, mSlider.getMax());
-            mAnimator.setDuration(duration);
-            mAnimator.setInterpolator(new AccelerateInterpolator());
-            mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            mAnimatorForThumb = ValueAnimator.ofInt(SLIDER_PROGRESS, mSlider.getMax());
+            mAnimatorForThumb.setDuration(duration);
+            mAnimatorForThumb.setInterpolator(new AccelerateInterpolator());
+            mAnimatorForThumb.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     SLIDER_PROGRESS = (Integer) animation.getAnimatedValue();
                     mSlider.setProgress(SLIDER_PROGRESS);
                 }
             });
-            mAnimator.start();
+            mAnimatorForThumb.start();
         }else {
-            mAnimator = ValueAnimator.ofInt(SLIDER_PROGRESS,  0);
-            mAnimator.setDuration(duration);
-            mAnimator.setInterpolator(new AccelerateInterpolator());
-            mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            mAnimatorForThumb = ValueAnimator.ofInt(SLIDER_PROGRESS,  0);
+            mAnimatorForThumb.setDuration(duration);
+            mAnimatorForThumb.setInterpolator(new AccelerateInterpolator());
+            mAnimatorForThumb.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     SLIDER_PROGRESS = (Integer) animation.getAnimatedValue();
                     mSlider.setProgress(SLIDER_PROGRESS);
                 }
             });
-            mAnimator.start();
+            mAnimatorForThumb.start();
         }
     }
 
