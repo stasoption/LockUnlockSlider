@@ -42,8 +42,10 @@ public class MainActivity extends AppCompatActivity {
         mLockUnlockSlider.setImageThumbWhenLock(ResourcesCompat.getDrawable(getResources(),android.R.drawable.ic_lock_silent_mode, null)); //set icon for the thumb. param:--
         mLockUnlockSlider.setImageThumbWhenUnLock(ResourcesCompat.getDrawable(getResources(),android.R.drawable.ic_lock_silent_mode_off, null));//--()
         //background parameters
-        mLockUnlockSlider.setBackgroundWhenLock(15, Color.parseColor("#4B0082"), 10, Color.parseColor("#FFA500")); // set background for screens when lock or unlock. parameters:
-        mLockUnlockSlider.setBackgroundWhenUnLock(15, Color.parseColor("#8A2BE2"), 10, Color.parseColor("#FFA500")); // (angle of the shape, color of background, width of border, color of border)
+        mLockUnlockSlider.setStrokeWidth(10);
+        mLockUnlockSlider.setStrokeColor(Color.parseColor("#FFA500"));
+        mLockUnlockSlider.setBackgroundWhenLock(15, Color.parseColor("#4B0082")); // set background for screens when lock or unlock. parameters:
+        mLockUnlockSlider.setBackgroundWhenUnLock(15, Color.parseColor("#8A2BE2")); // (angle of the shape, color of background, width of border, color of border)
         //text parameters
         mLockUnlockSlider.setTextWhenLock("On"); // text status of slider when lock
         mLockUnlockSlider.setTextWhenUnLock("Off"); // text status of slider when unlock

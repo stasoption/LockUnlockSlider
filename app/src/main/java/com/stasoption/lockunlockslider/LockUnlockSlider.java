@@ -159,34 +159,36 @@ public class LockUnlockSlider extends RelativeLayout {
     public void setStrokeWidth(int width){
         STROKE_WIDTH = width;
     }
+    private int getStrokeWidth(){
+        return STROKE_WIDTH;
+    }
 
     public void setStrokeColor(int color){
         STROKE_COLOR = color;
     }
+    private int getStrokeColor(){
+        return STROKE_COLOR;
+    }
 
-    public void setBackgroundWhenLock(int angle, int background_color, int stroke_weight, int stroke_color){
+    public void setBackgroundWhenLock(int angle, int background_color){
         BACKGROUND_ANGLE_WHEN_LOCK = dpToPx(angle);
         BACKGROUND_COLOR_WHEN_LOCK = background_color;
-        STROKE_WIDTH = stroke_weight;
-        STROKE_COLOR = stroke_color;
         BACKGROUND_WHEN_LOCK = createDrawableForBackground(
                 BACKGROUND_ANGLE_WHEN_LOCK,
                 BACKGROUND_COLOR_WHEN_LOCK,
-                STROKE_WIDTH,
-                STROKE_COLOR
+                getStrokeWidth(),
+                getStrokeColor()
         );
     }
 
-    public void setBackgroundWhenUnLock(int angle, int background_color, int stroke_weight, int stroke_color){
+    public void setBackgroundWhenUnLock(int angle, int background_color){
         BACKGROUND_ANGLE_WHEN_UNLOCK = dpToPx(angle);
         BACKGROUND_COLOR_WHEN_UNLOCK = background_color;
-        STROKE_WIDTH = stroke_weight;
-        STROKE_COLOR = stroke_color;
         BACKGROUND_WHEN_UNLOCK = createDrawableForBackground(
                 BACKGROUND_ANGLE_WHEN_UNLOCK,
                 BACKGROUND_COLOR_WHEN_UNLOCK,
-                STROKE_WIDTH,
-                STROKE_COLOR
+                getStrokeWidth(),
+                getStrokeColor()
         );
     }
 
