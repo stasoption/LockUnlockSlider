@@ -23,32 +23,33 @@ public class MainActivity extends AppCompatActivity {
         mLockUnlockSlider.setOnLockUnlockListener(new LockUnlockSlider.OnLockUnlockListener() {
             @Override
             public void onLock() {
-                Toast.makeText(MainActivity.this, "Lock", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "Lock", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onUnlock() {
-                Toast.makeText(MainActivity.this, "UnLock", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "UnLock", Toast.LENGTH_SHORT).show();
             }
         });
 
         //here, we can set some parameters (OPTIONAL) for slider
         mLockUnlockSlider.setSliderStatus(INIT_STATUS_FOR_SLIDER); //primary bool param (true/false)
+        //thumb parameters
+        mLockUnlockSlider.setThumbAngle(15); // angle of the thumb
         mLockUnlockSlider.setThumbHeight(60); //thumb height
         mLockUnlockSlider.setThumbWidth(60); //thumb width
-        mLockUnlockSlider.setGradientForThumb(Color.GRAY, Color.WHITE); //set background for thumb (gradient or monotone)
-        mLockUnlockSlider.setBackgroundWhenLock(45, Color.parseColor("#929292"), 1, Color.GRAY); // set background for screens when lock or unlock. parameters:
-        mLockUnlockSlider.setBackgroundWhenUnLock(45, Color.parseColor("#7ed321"), 1, Color.GRAY); // (angle of the shape, color of background, width of border, color of border)
-        mLockUnlockSlider.setThumbAngle(45); // angle of the thumb
-        mLockUnlockSlider.setTextWhenLock("Unolck"); // text status of slider when lock
-        mLockUnlockSlider.setTextWhenUnLock("Lock"); // text status of slider when unlock
-        mLockUnlockSlider.setTextSize(16); // text size on slider
-        mLockUnlockSlider.setTextColor(Color.parseColor("#FAF0E6")); //text color on slider
-        mLockUnlockSlider.setImageThumbWhenLock(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_lock_open_black_24dp, null)); //set icon for the thumb. param:--
-        mLockUnlockSlider.setImageThumbWhenUnLock(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_lock_outline_black_24dp, null));//--()
-
-        
-        //start the slider
+        mLockUnlockSlider.setGradientForThumb(Color.parseColor("#FFA500"), Color.YELLOW); //set background for thumb (gradient or monotone)
+        mLockUnlockSlider.setImageThumbWhenLock(ResourcesCompat.getDrawable(getResources(),android.R.drawable.ic_lock_silent_mode, null)); //set icon for the thumb. param:--
+        mLockUnlockSlider.setImageThumbWhenUnLock(ResourcesCompat.getDrawable(getResources(),android.R.drawable.ic_lock_silent_mode_off, null));//--()
+        //background parameters
+        mLockUnlockSlider.setBackgroundWhenLock(15, Color.parseColor("#4B0082"), 10, Color.parseColor("#FFA500")); // set background for screens when lock or unlock. parameters:
+        mLockUnlockSlider.setBackgroundWhenUnLock(15, Color.parseColor("#8A2BE2"), 10, Color.parseColor("#FFA500")); // (angle of the shape, color of background, width of border, color of border)
+        //text parameters
+        mLockUnlockSlider.setTextWhenLock("On"); // text status of slider when lock
+        mLockUnlockSlider.setTextWhenUnLock("Off"); // text status of slider when unlock
+        mLockUnlockSlider.setTextSize(20); // text size on slider
+        mLockUnlockSlider.setTextColor(Color.WHITE); //text color on slider
+        //init the slider
         mLockUnlockSlider.initialize(); //very important parameter!
 
 
