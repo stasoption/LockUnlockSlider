@@ -7,7 +7,7 @@ Thus it has interface with two methods: onLock(), onUnlock().
 
 Also, you can add custom parameters such as background when lock, background when unlock, angle and gradient for the thumb, text for the slider etc.
 
-![alt tag](https://68.media.tumblr.com/110a08c1afbfbc32c512d074804a67c0/tumblr_inline_oj03eepeQ01u3v231_500.gif)
+![alt tag](https://68.media.tumblr.com/ce782fcaaa39d3d04e932ee5783c3266/tumblr_inline_oj03rhgp3s1u3v231_500.gif)
 
 ![alt tag](https://68.media.tumblr.com/a7a973977bb49ab76cc43cc8df6c2931/tumblr_inline_oj03emAIt81u3v231_500.gif)
 
