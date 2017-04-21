@@ -12,7 +12,7 @@ Also, you can add custom parameters such as background when lock, background whe
 ![alt tag](https://68.media.tumblr.com/a7a973977bb49ab76cc43cc8df6c2931/tumblr_inline_oj03emAIt81u3v231_500.gif)
 
 
-#How to use:
+# How to use:
 
 **First**<br />
 In your XML file, add follow code:
