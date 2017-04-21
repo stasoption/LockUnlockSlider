@@ -47,7 +47,8 @@ In your activity, add LockUnlockSlider and override the follow interface
 ```        
 Before initialization you may to set some parameters (OPTIONAL) for slider
 ```
-        mLockUnlockSlider.setSliderStatus(INIT_STATUS_FOR_SLIDER); //primary bool param (true/false)
+        mLockUnlockSlider.setSliderStatus(BOOLEAN_STATUS_FOR_SLIDER); //primary bool param (true/false)
+        
         //thumb parameters
         mLockUnlockSlider.setThumbAngle(5); // angle of the thumb
         mLockUnlockSlider.setThumbHeight(60); //thumb height
@@ -55,18 +56,20 @@ Before initialization you may to set some parameters (OPTIONAL) for slider
         mLockUnlockSlider.setGradientForThumb(Color.parseColor("#FFA500"), Color.YELLOW); //set background for thumb (gradient or monotone)
         mLockUnlockSlider.setImageThumbWhenLock(ResourcesCompat.getDrawable(getResources(),android.R.drawable.ic_lock_silent_mode, null)); //set icon for the thumb. param:--
         mLockUnlockSlider.setImageThumbWhenUnLock(ResourcesCompat.getDrawable(getResources(),android.R.drawable.ic_lock_silent_mode_off, null));//--()
+        
         //background parameters
         mLockUnlockSlider.setStrokeWidth(5);
         mLockUnlockSlider.setStrokeColor(Color.parseColor("#FFA500"));
         mLockUnlockSlider.setBackgroundWhenLock(5, Color.parseColor("#4B0082")); // set background for screens when lock or unlock. parameters:
         mLockUnlockSlider.setBackgroundWhenUnLock(5, Color.parseColor("#8A2BE2")); // (angle of the shape, color of background, width of border, color of border)
+        
         //text parameters
         mLockUnlockSlider.setTextWhenLock("On"); // text status of slider when lock
         mLockUnlockSlider.setTextWhenUnLock("Off"); // text status of slider when unlock
         mLockUnlockSlider.setTextSize(25); // text size on slider
         mLockUnlockSlider.setTextColor(Color.parseColor("#FFA500")); //text color on slider
-        //init the slider
         
+        //init the slider
         mLockUnlockSlider.initialize(); //very important parameter!
 ```      
 
