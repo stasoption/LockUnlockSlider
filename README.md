@@ -23,7 +23,7 @@ In your XML file, add follow code:
               android:layout_height="wrap_content" />
 ```        
 **Next**<br />
-In your activity, add CountryPickerView and override the follow interface
+In your activity, add LockUnlockSlider and override the follow interface
 
 ```
       LockUnlockSlider mLockUnlockSlider = (LockUnlockSlider)findViewById(R.id.lockUnlockSlider);
