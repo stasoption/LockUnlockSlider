@@ -47,7 +47,7 @@ In your activity, add LockUnlockSlider and override the follow interface
 ```        
 Before initialization you may to set some parameters (OPTIONAL) for slider
 ```
-        mLockUnlockSlider.setSliderStatus(BOOLEAN_STATUS_FOR_SLIDER); //primary bool param (true/false)
+        mLockUnlockSlider.setSliderStatus(BOOLEAN_STATUS_FOR_SLIDER); //primary bool param (lock or unlock)
         
         //thumb parameters
         mLockUnlockSlider.setThumbAngle(5); // angle of the thumb
