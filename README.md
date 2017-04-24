@@ -1,6 +1,6 @@
 # LockUnlockSlider
 
-LockUnlockSlider for android has two modes (true/false). 
+**LockUnlockSlider** for android has two modes (true/false). 
 Thus it has interface with two methods: onLock(), onUnlock().
 
 ![alt tag](https://68.media.tumblr.com/ff60864ce37188b346b08f25d35baed6/tumblr_inline_oizs58YQQs1u3v231_500.gif)
