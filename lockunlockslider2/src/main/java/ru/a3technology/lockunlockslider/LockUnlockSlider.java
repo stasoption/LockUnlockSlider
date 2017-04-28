@@ -28,7 +28,7 @@ import android.widget.TextView;
  */
 
 public class LockUnlockSlider extends RelativeLayout {
-    //default global values for slider
+
     private static final int MAX_VALUE = 10000;
     private static final int ANIM_DURATION = 400;
 
