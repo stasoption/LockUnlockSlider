@@ -28,6 +28,10 @@ import android.widget.TextView;
  */
 
 public class LockUnlockSlider extends RelativeLayout {
+    //default global values for slider
+    private static final int MAX_VALUE = 10000;
+    private static final int ANIM_DURATION = 400;
+
     //interface for listening of the slider status
     private OnLockUnlockListener listener = null;
     //for the slider animation when changing the status
@@ -37,27 +41,24 @@ public class LockUnlockSlider extends RelativeLayout {
     private RelativeLayout mViewBackground;
     private SeekBar mSlider;
     private TextView mTextHint;
-    //default global values for slider
-    private static final int MAX_VALUE = 10000;
-    private static final int ANIM_DURATION = 400;
     //status of the slider
-    private boolean SLIDER_STATUS;
+    private boolean mSliderStatus;
     //value for thumb animation
-    private int SLIDER_PROGRESS;
+    private int mSliderProgress;
     //thumb metrics
-    private int THUMB_ANGLE, THUMB_HEIGHT, THUMB_WIDTH;
+    private int mThumbAngle, mThumbHeight, mThumbWidth;
     //thumb a shape and a background (gradient)
-    private Drawable THUMB_FORWARD, THUMB_BACK;
-    private int THUMB_COLOR_1 ,THUMB_COLOR_2;
+    private Drawable mThumbForward, mThumbBack;
+    private int mThumbColor1, mThumbColor2;
     //text view on the slider
-    private String TEXT_FOR_SLIDER_WHEN_UNLOCK, TEXT_FOR_SLIDER_WHEN_LOCK;
-    private int TEXT_SIZE, TEXT_COLOR;
+    private String mTextForSliderWhenUnlock, mTextForSliderWhenLock;
+    private int mTextSize, mTextColor;
     //for the slider background
-    private Drawable BACKGROUND_WHEN_LOCK, BACKGROUND_WHEN_UNLOCK;
-    private int BACKGROUND_ANGLE_WHEN_LOCK, BACKGROUND_COLOR_WHEN_LOCK;
-    private int BACKGROUND_ANGLE_WHEN_UNLOCK, BACKGROUND_COLOR_WHEN_UNLOCK;
+    private Drawable mBackgroundWhenLock, mBackgroundWhenUnlock;
+    private int mBackgroundAngleWhenLock, mBackgroundColorWhenLock;
+    private int mBackgroundAngleWhenUnlock, mBackgroundColorWhenUnlock;
     //stroke width
-    private int STROKE_WIDTH, STROKE_COLOR;
+    private int mBorderWidth, mBorderColor;
 
     /**
      * CONSTRUCTORS
@@ -88,142 +89,142 @@ public class LockUnlockSlider extends RelativeLayout {
      */
     private void setDefaultParametersForSlider(){
         // setting parameters for slider
-        THUMB_HEIGHT = 60;
-        THUMB_WIDTH = 60;
+        mThumbHeight = 60;
+        mThumbWidth = 60;
         //default form for shape
-        THUMB_ANGLE = dpToPx(45);
+        mThumbAngle = dpToPx(45);
         //default text on the slider
-        TEXT_FOR_SLIDER_WHEN_UNLOCK = "Lock";
-        TEXT_FOR_SLIDER_WHEN_LOCK = "Unlock";
-        TEXT_SIZE = 12;
-        TEXT_COLOR = Color.WHITE;
+        mTextForSliderWhenUnlock = "Lock";
+        mTextForSliderWhenLock = "Unlock";
+        mTextSize = 12;
+        mTextColor = Color.WHITE;
 
         //default background colors
-        BACKGROUND_ANGLE_WHEN_LOCK = dpToPx(45);
-        BACKGROUND_COLOR_WHEN_LOCK = Color.GRAY;
-        STROKE_WIDTH = 1;
-        STROKE_COLOR = Color.GRAY;
-        BACKGROUND_WHEN_LOCK = createDrawableForBackground(
-                BACKGROUND_ANGLE_WHEN_LOCK,
-                BACKGROUND_COLOR_WHEN_LOCK,
-                STROKE_WIDTH,
-                STROKE_COLOR);
+        mBackgroundAngleWhenLock = dpToPx(45);
+        mBackgroundColorWhenLock = Color.GRAY;
+        mBorderWidth = 1;
+        mBorderColor = Color.GRAY;
+        mBackgroundWhenLock = createDrawableForBackground(
+                mBackgroundAngleWhenLock,
+                mBackgroundColorWhenLock,
+                mBorderWidth,
+                mBorderColor);
 
-        BACKGROUND_ANGLE_WHEN_UNLOCK = dpToPx(45);
-        BACKGROUND_COLOR_WHEN_UNLOCK = Color.GREEN;
-        STROKE_WIDTH = 1;
-        STROKE_COLOR = Color.GRAY;
-        BACKGROUND_WHEN_UNLOCK = createDrawableForBackground(
-                BACKGROUND_ANGLE_WHEN_UNLOCK,
-                BACKGROUND_COLOR_WHEN_UNLOCK,
-                STROKE_WIDTH,
-                STROKE_COLOR);
+        mBackgroundAngleWhenUnlock = dpToPx(45);
+        mBackgroundColorWhenUnlock = Color.GREEN;
+        mBorderWidth = 1;
+        mBorderColor = Color.GRAY;
+        mBackgroundWhenUnlock = createDrawableForBackground(
+                mBackgroundAngleWhenUnlock,
+                mBackgroundColorWhenUnlock,
+                mBorderWidth,
+                mBorderColor);
 
         //default thumb
         if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN){
-            THUMB_FORWARD = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_lock_open_black_24dp, null);;
+            mThumbForward = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_lock_open_black_24dp, null);;
         }else {
-            THUMB_FORWARD = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_lock_lock, null);
+            mThumbForward = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_lock_lock, null);
         }
         if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN){
-            THUMB_BACK = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_lock_outline_black_24dp, null);
+            mThumbBack = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_lock_outline_black_24dp, null);
         }else {
-            THUMB_BACK = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_lock_lock, null);
+            mThumbBack = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_lock_lock, null);
         }
-        THUMB_COLOR_1 = Color.WHITE;
-        THUMB_COLOR_2 = Color.GRAY;
+        mThumbColor1 = Color.WHITE;
+        mThumbColor2 = Color.GRAY;
     }
 
     /**
      *  METHODS FOR THE CUSTOM USER PARAMETERS
      */
     public void setSliderStatus(boolean status) {
-        SLIDER_STATUS = status;
+        mSliderStatus = status;
         checkPrimarySliderProgress();
     }
 
     public void setThumbWidth(int width){
-        THUMB_WIDTH = width;
+        mThumbWidth = width;
     }
 
     public void setThumbHeight(int height){
-        THUMB_HEIGHT = height;
+        mThumbHeight = height;
     }
 
     public void setGradientForThumb(int color_from, int color_to){
-        THUMB_COLOR_1 = color_from;
-        THUMB_COLOR_2 = color_to;
+        mThumbColor1 = color_from;
+        mThumbColor2 = color_to;
     }
 
-    public void setStrokeWidth(int width){
-        STROKE_WIDTH = width;
+    public void setBorderWidth(int width){
+        mBorderWidth = width;
     }
-    private int getStrokeWidth(){
-        return STROKE_WIDTH;
+    private int getBorderWidth(){
+        return mBorderWidth;
     }
 
-    public void setStrokeColor(int color){
-        STROKE_COLOR = color;
+    public void setBorderColor(int color){
+        mBorderColor = color;
     }
-    private int getStrokeColor(){
-        return STROKE_COLOR;
+    private int getBorderColor(){
+        return mBorderColor;
     }
 
     public void setBackgroundWhenLock(int angle, int background_color){
-        BACKGROUND_ANGLE_WHEN_LOCK = dpToPx(angle);
-        BACKGROUND_COLOR_WHEN_LOCK = background_color;
-        BACKGROUND_WHEN_LOCK = createDrawableForBackground(
-                BACKGROUND_ANGLE_WHEN_LOCK,
-                BACKGROUND_COLOR_WHEN_LOCK,
-                getStrokeWidth(),
-                getStrokeColor()
+        mBackgroundAngleWhenLock = dpToPx(angle);
+        mBackgroundColorWhenLock = background_color;
+        mBackgroundWhenLock = createDrawableForBackground(
+                mBackgroundAngleWhenLock,
+                mBackgroundColorWhenLock,
+                getBorderWidth(),
+                getBorderColor()
         );
     }
 
     public void setBackgroundWhenUnLock(int angle, int background_color){
-        BACKGROUND_ANGLE_WHEN_UNLOCK = dpToPx(angle);
-        BACKGROUND_COLOR_WHEN_UNLOCK = background_color;
-        BACKGROUND_WHEN_UNLOCK = createDrawableForBackground(
-                BACKGROUND_ANGLE_WHEN_UNLOCK,
-                BACKGROUND_COLOR_WHEN_UNLOCK,
-                getStrokeWidth(),
-                getStrokeColor()
+        mBackgroundAngleWhenUnlock = dpToPx(angle);
+        mBackgroundColorWhenUnlock = background_color;
+        mBackgroundWhenUnlock = createDrawableForBackground(
+                mBackgroundAngleWhenUnlock,
+                mBackgroundColorWhenUnlock,
+                getBorderWidth(),
+                getBorderColor()
         );
     }
 
     public void setThumbAngle(int thumb_angle){
-        THUMB_ANGLE = dpToPx(thumb_angle);
+        mThumbAngle = dpToPx(thumb_angle);
     }
 
     public void setTextWhenLock(String text){
-        TEXT_FOR_SLIDER_WHEN_LOCK = text;
+        mTextForSliderWhenLock = text;
     }
 
     public void setTextWhenUnLock(String text){
-        TEXT_FOR_SLIDER_WHEN_UNLOCK = text;
+        mTextForSliderWhenUnlock = text;
     }
 
     public void setTextSize(int size){
-        TEXT_SIZE = size;
+        mTextSize = size;
     }
 
     public void setTextColor(int color){
-        TEXT_COLOR = color;
+        mTextColor = color;
     }
 
     public void setImageThumbWhenLock(Drawable img){
         if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN){
-            THUMB_BACK = img;
+            mThumbBack = img;
         }else {
-            THUMB_BACK = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_lock_lock, null);
+            mThumbBack = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_lock_lock, null);
         }
     }
 
     public void setImageThumbWhenUnLock(Drawable img){
         if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN){
-            THUMB_FORWARD = img;
+            mThumbForward = img;
         }else {
-            THUMB_FORWARD = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_lock_lock, null);
+            mThumbForward = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_lock_lock, null);
         }
     }
 
@@ -268,8 +269,8 @@ public class LockUnlockSlider extends RelativeLayout {
         //text
         mTextHint = (TextView) findViewById(R.id.seekBar_hint);
         mTextHint.setTypeface(null, Typeface.BOLD);
-        mTextHint.setTextSize(TEXT_SIZE);
-        mTextHint.setTextColor(TEXT_COLOR);
+        mTextHint.setTextSize(mTextSize);
+        mTextHint.setTextColor(mTextColor);
     }
 
     /**
@@ -285,12 +286,12 @@ public class LockUnlockSlider extends RelativeLayout {
                if(progress == 0 || progress == MAX_VALUE){
                     switch (progress){
                         case 0:
-                            SLIDER_STATUS = false;
+                            mSliderStatus = false;
                             if (listener != null) listener.onLock();
                             break;
 
                         case MAX_VALUE:
-                            SLIDER_STATUS = true;
+                            mSliderStatus = true;
                             if (listener != null) listener.onUnlock();
                             break;
                     }
@@ -329,7 +330,7 @@ public class LockUnlockSlider extends RelativeLayout {
         //set background when the slider progress 0 or 100
         setBackgroundWhenStatic();
         //set padding
-        mSlider.setPadding(STROKE_WIDTH,STROKE_WIDTH,STROKE_WIDTH,STROKE_WIDTH);
+        mSlider.setPadding(mBorderWidth, mBorderWidth, mBorderWidth, mBorderWidth);
         // /set the thumb to slider
         mSlider.setThumb(changeThumb());
         mSlider.setThumbOffset(0);
@@ -338,26 +339,26 @@ public class LockUnlockSlider extends RelativeLayout {
     private LayerDrawable changeThumb(){
         //circle
         GradientDrawable gd = new GradientDrawable();
-        gd.setColors(new int[]{ THUMB_COLOR_1, THUMB_COLOR_2 });
+        gd.setColors(new int[]{mThumbColor1, mThumbColor2});
         // Set the GradientDrawable gradient type linear gradient
         gd.setGradientType(GradientDrawable.RADIAL_GRADIENT);
         // Set GradientDrawable shape is a rectangle
         gd.setShape(GradientDrawable.RECTANGLE);
         //form of shape
-        gd.setCornerRadius(THUMB_ANGLE);
+        gd.setCornerRadius(mThumbAngle);
         // Set N pixels width solid blue color border
         gd.setStroke(1, Color.GRAY);
         // Set GradientDrawable width and height in pixels
-        gd.setSize(dpToPx(THUMB_WIDTH), dpToPx(THUMB_HEIGHT));
+        gd.setSize(dpToPx(mThumbWidth), dpToPx(mThumbHeight));
         // Set gradient radius
         gd.setGradientRadius(dpToPx(70));
 
         // set the thumb icon by bool status
         Bitmap mTHUMB_BITMAP;
-        if(SLIDER_STATUS){
-            mTHUMB_BITMAP = ((BitmapDrawable) THUMB_FORWARD).getBitmap();
+        if(mSliderStatus){
+            mTHUMB_BITMAP = ((BitmapDrawable) mThumbForward).getBitmap();
         }else {
-            mTHUMB_BITMAP = ((BitmapDrawable) THUMB_BACK).getBitmap();
+            mTHUMB_BITMAP = ((BitmapDrawable) mThumbBack).getBitmap();
         }
 
         //result thumb drawable
@@ -372,7 +373,7 @@ public class LockUnlockSlider extends RelativeLayout {
      * SET PROGRESS WHEN THE SLIDER INITS FIRST TIME
      */
     private void checkPrimarySliderProgress(){
-        if(SLIDER_STATUS) {
+        if(mSliderStatus) {
             mSlider.setProgress(MAX_VALUE);
         }else {
             mSlider.setProgress(0);
@@ -384,15 +385,15 @@ public class LockUnlockSlider extends RelativeLayout {
      */
     private void setBackgroundWhenStatic(){
         mTextHint.setVisibility(View.VISIBLE);
-        BACKGROUND_WHEN_LOCK = createDrawableForBackground(BACKGROUND_ANGLE_WHEN_LOCK, BACKGROUND_COLOR_WHEN_LOCK, STROKE_WIDTH, STROKE_COLOR);
-        BACKGROUND_WHEN_UNLOCK = createDrawableForBackground(BACKGROUND_ANGLE_WHEN_UNLOCK, BACKGROUND_COLOR_WHEN_UNLOCK, STROKE_WIDTH, STROKE_COLOR);
+        mBackgroundWhenLock = createDrawableForBackground(mBackgroundAngleWhenLock, mBackgroundColorWhenLock, mBorderWidth, mBorderColor);
+        mBackgroundWhenUnlock = createDrawableForBackground(mBackgroundAngleWhenUnlock, mBackgroundColorWhenUnlock, mBorderWidth, mBorderColor);
 
-        if(SLIDER_STATUS) {
-            mTextHint.setText(TEXT_FOR_SLIDER_WHEN_UNLOCK);
-            setBackgroundStatic(BACKGROUND_WHEN_UNLOCK);
+        if(mSliderStatus) {
+            mTextHint.setText(mTextForSliderWhenUnlock);
+            setBackgroundStatic(mBackgroundWhenUnlock);
         }else {
-            mTextHint.setText(TEXT_FOR_SLIDER_WHEN_LOCK);
-            setBackgroundStatic(BACKGROUND_WHEN_LOCK);
+            mTextHint.setText(mTextForSliderWhenLock);
+            setBackgroundStatic(mBackgroundWhenLock);
         }
     }
 
@@ -400,12 +401,12 @@ public class LockUnlockSlider extends RelativeLayout {
      * START ANIMATION WHEN THE PROGRESS >50%
      */
     private void startTransitionDrawableByStatus() {
-        if (SLIDER_STATUS) {
-            mTransitionForBackGround = new TransitionDrawable(new Drawable[]{BACKGROUND_WHEN_UNLOCK, BACKGROUND_WHEN_LOCK});
+        if (mSliderStatus) {
+            mTransitionForBackGround = new TransitionDrawable(new Drawable[]{mBackgroundWhenUnlock, mBackgroundWhenLock});
             mViewBackground.setBackground(mTransitionForBackGround);
             mTransitionForBackGround.startTransition(ANIM_DURATION);
         } else {
-            mTransitionForBackGround = new TransitionDrawable(new Drawable[]{BACKGROUND_WHEN_LOCK, BACKGROUND_WHEN_UNLOCK});
+            mTransitionForBackGround = new TransitionDrawable(new Drawable[]{mBackgroundWhenLock, mBackgroundWhenUnlock});
             mViewBackground.setBackground(mTransitionForBackGround);
             mTransitionForBackGround.startTransition(ANIM_DURATION);
         }
@@ -415,10 +416,10 @@ public class LockUnlockSlider extends RelativeLayout {
      * START ANIMATION WHEN THE PROGRESS < 50%
      */
     private void reverseTransitionDrawableByStatus(){
-        if(!SLIDER_STATUS && mSlider.getProgress() < MAX_VALUE/2){
+        if(!mSliderStatus && mSlider.getProgress() < MAX_VALUE/2){
             mTransitionForBackGround.reverseTransition(ANIM_DURATION);
         }
-        else if(SLIDER_STATUS && mSlider.getProgress() > MAX_VALUE/2){
+        else if(mSliderStatus && mSlider.getProgress() > MAX_VALUE/2){
             mTransitionForBackGround.reverseTransition(ANIM_DURATION);
         }
     }
@@ -431,29 +432,29 @@ public class LockUnlockSlider extends RelativeLayout {
         if (mAnimatorForThumb !=null) mAnimatorForThumb.cancel();
 
         int duration = ANIM_DURATION;
-        SLIDER_PROGRESS = mSlider.getProgress();
+        mSliderProgress = mSlider.getProgress();
 
-        if(SLIDER_PROGRESS > MAX_VALUE/2){
-            mAnimatorForThumb = ValueAnimator.ofInt(SLIDER_PROGRESS, mSlider.getMax());
+        if(mSliderProgress > MAX_VALUE/2){
+            mAnimatorForThumb = ValueAnimator.ofInt(mSliderProgress, mSlider.getMax());
             mAnimatorForThumb.setDuration(duration);
             mAnimatorForThumb.setInterpolator(new AccelerateInterpolator());
             mAnimatorForThumb.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    SLIDER_PROGRESS = (Integer) animation.getAnimatedValue();
-                    mSlider.setProgress(SLIDER_PROGRESS);
+                    mSliderProgress = (Integer) animation.getAnimatedValue();
+                    mSlider.setProgress(mSliderProgress);
                 }
             });
             mAnimatorForThumb.start();
         }else {
-            mAnimatorForThumb = ValueAnimator.ofInt(SLIDER_PROGRESS,  0);
+            mAnimatorForThumb = ValueAnimator.ofInt(mSliderProgress,  0);
             mAnimatorForThumb.setDuration(duration);
             mAnimatorForThumb.setInterpolator(new AccelerateInterpolator());
             mAnimatorForThumb.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    SLIDER_PROGRESS = (Integer) animation.getAnimatedValue();
-                    mSlider.setProgress(SLIDER_PROGRESS);
+                    mSliderProgress = (Integer) animation.getAnimatedValue();
+                    mSlider.setProgress(mSliderProgress);
                 }
             });
             mAnimatorForThumb.start();
@@ -465,10 +466,10 @@ public class LockUnlockSlider extends RelativeLayout {
      */
     private void setSeekBarBackgroundTransparent(){
         //progress
-        Drawable shape = createDrawableForBackground(THUMB_ANGLE, Color.TRANSPARENT, 0, Color.TRANSPARENT);
+        Drawable shape = createDrawableForBackground(mThumbAngle, Color.TRANSPARENT, 0, Color.TRANSPARENT);
         ClipDrawable clip = new ClipDrawable(shape, Gravity.LEFT, ClipDrawable.HORIZONTAL);
         //background
-        Drawable shape1 = createDrawableForBackground(THUMB_ANGLE, Color.TRANSPARENT, 0, Color.TRANSPARENT);
+        Drawable shape1 = createDrawableForBackground(mThumbAngle, Color.TRANSPARENT, 0, Color.TRANSPARENT);
         //ProgressDrawable
         LayerDrawable mylayer = new LayerDrawable(new Drawable[]{shape1,clip});
         mSlider.setProgressDrawable(mylayer);
