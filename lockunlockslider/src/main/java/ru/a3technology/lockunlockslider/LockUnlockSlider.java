@@ -33,8 +33,8 @@ public class LockUnlockSlider extends RelativeLayout {
     private static final int MAX_VALUE = 10000;
     private static final int ANIM_DURATION = 400;
 
-    //interface for listening of the slider status
-    private OnLockUnlockListener listener = null;
+    private OnLockUnlockListener mOnLockUnlockListener;
+
     //for the slider animation when changing the status
     private TransitionDrawable mTransitionForBackGround;
     private ValueAnimator mAnimatorForThumb;
@@ -79,7 +79,7 @@ public class LockUnlockSlider extends RelativeLayout {
      * @param listener when status will change
      */
     public void setOnLockUnlockListener(OnLockUnlockListener listener)    {
-        this.listener = listener;
+        this.mOnLockUnlockListener = listener;
     }
 
 
@@ -259,12 +259,12 @@ public class LockUnlockSlider extends RelativeLayout {
                     switch (progress){
                         case MIN_VALUE:
                             mSliderStatus = false;
-                            if (listener != null) listener.onLock();
+                            if (mOnLockUnlockListener != null) mOnLockUnlockListener.onLock();
                             break;
 
                         case MAX_VALUE:
                             mSliderStatus = true;
-                            if (listener != null) listener.onUnlock();
+                            if (mOnLockUnlockListener != null) mOnLockUnlockListener.onUnlock();
                             break;
                     }
                    upDateSlider();
