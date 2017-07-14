@@ -33,14 +33,11 @@ In your activity, add LockUnlockSlider and override the follow interface
                 Toast.makeText(MainActivity.this, "UnLock", Toast.LENGTH_SHORT).show();
             }
      });
+     
+      mLockUnlockSlider.build();
 ```
-
-
-**!Next, vary impotant! You can init the slider**<br />
-```
-        mLockUnlockSlider.build();
-```        
-Before initialization you may to set some parameters (OPTIONAL) for slider
+      
+Before building you may to set some parameters (OPTIONAL) for slider
 ```
         mLockUnlockSlider.setSliderStatus(BOOLEAN_STATUS_FOR_SLIDER); //primary boolean status (locked or unlocked)
         
