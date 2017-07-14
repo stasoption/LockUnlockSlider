@@ -38,7 +38,7 @@ In your activity, add LockUnlockSlider and override the follow interface
 
 **!Next, vary impotant! You can init the slider**<br />
 ```
-        mLockUnlockSlider.initialize();
+        mLockUnlockSlider.build();
 ```        
 Before initialization you may to set some parameters (OPTIONAL) for slider
 ```
@@ -65,7 +65,7 @@ Before initialization you may to set some parameters (OPTIONAL) for slider
         mLockUnlockSlider.setTextColor(Color.parseColor("#FFA500")); //text color on slider
         
         //init the slider
-        mLockUnlockSlider.initialize(); //very important parameter!
+        mLockUnlockSlider.build(); //very important parameter!
 ```      
 
 ![alt tag](https://68.media.tumblr.com/c5a7481a2931e015751cbcb9ec3c3978/tumblr_inline_oj040q7zBw1u3v231_500.gif)
