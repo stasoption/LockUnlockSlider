@@ -75,17 +75,11 @@ public class LockUnlockSlider extends RelativeLayout {
         init(context, attrs);
     }
 
-    /**
-     * @param listener when status will change
-     */
     public void setOnLockUnlockListener(OnLockUnlockListener listener)    {
         this.mOnLockUnlockListener = listener;
     }
 
-
-    /**
-     *  METHODS FOR THE CUSTOM USER PARAMETERS
-     */
+    /*user parameters*/
     public void setSliderStatus(boolean status) {
         mSliderStatus = status;
         checkPrimarySliderProgress();
