@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 public class LockUnlockSlider extends RelativeLayout {
 
+    private static final int MIN_VALUE = 0;
     private static final int MAX_VALUE = 10000;
     private static final int ANIM_DURATION = 400;
 
@@ -40,7 +41,7 @@ public class LockUnlockSlider extends RelativeLayout {
     //slider views
     private RelativeLayout mViewBackground;
     private SeekBar mSlider;
-    private TextView mTextHint;
+    private TextView mSliderStatusDescription;
     //status of the slider
     private boolean mSliderStatus;
     //value for thumb animation
@@ -60,80 +61,27 @@ public class LockUnlockSlider extends RelativeLayout {
     //stroke width
     private int mBorderWidth, mBorderColor;
 
-    /**
-     * CONSTRUCTORS
-     */
+
     public LockUnlockSlider(Context context) throws Exception {
         super(context);
-        primaryInit(context, null);
+        init(context, null);
     }
     public LockUnlockSlider(Context context, AttributeSet attrs) throws Exception {
         super(context, attrs);
-        primaryInit(context, attrs);
+        init(context, attrs);
     }
     public LockUnlockSlider(Context context, AttributeSet attrs, int defStyle) throws Exception {
         super(context, attrs, defStyle);
-        primaryInit(context, attrs);
+        init(context, attrs);
     }
 
     /**
-     * INTERFACE FOR USER
-     * @param listener for listening status of the slider
+     * @param listener when status will change
      */
     public void setOnLockUnlockListener(OnLockUnlockListener listener)    {
         this.listener = listener;
     }
 
-    /**
-     * DEFAULT INITIALIZED VIEWS
-     */
-    private void setDefaultParametersForSlider(){
-        // setting parameters for slider
-        mThumbHeight = 60;
-        mThumbWidth = 60;
-        //default form for shape
-        mThumbAngle = dpToPx(45);
-        //default text on the slider
-        mTextForSliderWhenUnlock = "Lock";
-        mTextForSliderWhenLock = "Unlock";
-        mTextSize = 12;
-        mTextColor = Color.WHITE;
-
-        //default background colors
-        mBackgroundAngleWhenLock = dpToPx(45);
-        mBackgroundColorWhenLock = Color.GRAY;
-        mBorderWidth = 1;
-        mBorderColor = Color.GRAY;
-        mBackgroundWhenLock = createDrawableForBackground(
-                mBackgroundAngleWhenLock,
-                mBackgroundColorWhenLock,
-                mBorderWidth,
-                mBorderColor);
-
-        mBackgroundAngleWhenUnlock = dpToPx(45);
-        mBackgroundColorWhenUnlock = Color.GREEN;
-        mBorderWidth = 1;
-        mBorderColor = Color.GRAY;
-        mBackgroundWhenUnlock = createDrawableForBackground(
-                mBackgroundAngleWhenUnlock,
-                mBackgroundColorWhenUnlock,
-                mBorderWidth,
-                mBorderColor);
-
-        //default thumb
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN){
-            mThumbForward = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_lock_open_black_24dp, null);;
-        }else {
-            mThumbForward = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_lock_lock, null);
-        }
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN){
-            mThumbBack = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_lock_outline_black_24dp, null);
-        }else {
-            mThumbBack = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_lock_lock, null);
-        }
-        mThumbColor1 = Color.WHITE;
-        mThumbColor2 = Color.GRAY;
-    }
 
     /**
      *  METHODS FOR THE CUSTOM USER PARAMETERS
@@ -228,64 +176,88 @@ public class LockUnlockSlider extends RelativeLayout {
         }
     }
 
+    public void build(){
+        setSliderParameters();
+    }
 
-    /**
-     * INIT THE SLIDER
-     * @param context
-     * @param attrs
-     */
-    private void primaryInit(Context context, AttributeSet attrs) throws Exception{
+
+    private void init(Context context, AttributeSet attrs) throws Exception{
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.lock_unlock_slider, this, true);
 
-        // Retrieve layout elements
+        // layout for slider background
         mViewBackground = (RelativeLayout) findViewById(R.id.view_background);
-        //slider primaryInit
+        //slider
         mSlider = (SeekBar) findViewById(R.id.seekBar);
+        //status when locked (unlocked)
+        mSliderStatusDescription = (TextView) findViewById(R.id.seekBar_hint);
         //set max value
         mSlider.setMax(MAX_VALUE);
         //set progress when firs time
         checkPrimarySliderProgress();
-        //set the transparent background
-        setSeekBarBackgroundTransparent();
         //default values for slider
         setDefaultParametersForSlider();
     }
 
-    /**
-     * INIT THE SLIDER FOR CHECKNG BY USERS PARAMETERS
-     */
-    public void initialize(){
-        //parameters for the text on the slider
-        initTextOnSliderParam();
-        //parameters for slider
-        setSliderParameters();
-    }
+    /*default slider parameters when init first time*/
+    private void setDefaultParametersForSlider(){
+        //set the transparent background
+        setSeekBarBackgroundTransparent();
+        // setting parameters for slider
+        mThumbHeight = 60;
+        mThumbWidth = 60;
+        //default form for shape
+        mThumbAngle = dpToPx(45);
+        //default text on the slider
+        mTextForSliderWhenUnlock = "Lock";
+        mTextForSliderWhenLock = "Unlock";
+        mTextSize = 12;
+        mTextColor = Color.WHITE;
 
-    /**
-     * TEXT ON SLIDER (LOCK / UNLOCK)
-     */
-    private void initTextOnSliderParam(){
-        //text
-        mTextHint = (TextView) findViewById(R.id.seekBar_hint);
-        mTextHint.setTypeface(null, Typeface.BOLD);
-        mTextHint.setTextSize(mTextSize);
-        mTextHint.setTextColor(mTextColor);
+        //default background colors
+        mBackgroundAngleWhenLock = dpToPx(45);
+        mBackgroundColorWhenLock = Color.GRAY;
+        mBorderWidth = 1;
+        mBorderColor = Color.GRAY;
+        mBackgroundWhenLock = createDrawableForBackground(
+                mBackgroundAngleWhenLock,
+                mBackgroundColorWhenLock,
+                mBorderWidth,
+                mBorderColor);
+
+        mBackgroundAngleWhenUnlock = dpToPx(45);
+        mBackgroundColorWhenUnlock = Color.GREEN;
+        mBorderWidth = 1;
+        mBorderColor = Color.GRAY;
+        mBackgroundWhenUnlock = createDrawableForBackground(
+                mBackgroundAngleWhenUnlock,
+                mBackgroundColorWhenUnlock,
+                mBorderWidth,
+                mBorderColor);
+
+        //default thumb
+        mThumbForward = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_lock_open_black_24dp, null);
+        mThumbBack = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_lock_outline_black_24dp, null);
+
+        mThumbColor1 = Color.WHITE;
+        mThumbColor2 = Color.GRAY;
     }
 
     /**
      * SET MAIN THE SLIDER LOGIC
      */
     private void setSliderParameters(){
+        //parameters for the status field
+        initTextFieldForSlider();
+
         upDateSlider();
 
         mSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-               if(progress == 0 || progress == MAX_VALUE){
+               if(progress == MIN_VALUE || progress == MAX_VALUE){
                     switch (progress){
-                        case 0:
+                        case MIN_VALUE:
                             mSliderStatus = false;
                             if (listener != null) listener.onLock();
                             break;
@@ -295,40 +267,39 @@ public class LockUnlockSlider extends RelativeLayout {
                             if (listener != null) listener.onUnlock();
                             break;
                     }
-
-                   if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
-                       upDateSlider();
-                   }else {
-                       setBackgroundWhenStatic();
-                   }
+                   upDateSlider();
                }
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                mTextHint.setVisibility(View.INVISIBLE);
-                //set animation for changing background, when the progress > 50%
+                mSliderStatusDescription.setVisibility(View.INVISIBLE);
+                //start animation when the progress > 50%
                 startTransitionDrawableByStatus();
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                //set animation for changing background, when the progress < 50%
+                //start reverse animation when the progress < 50%
                 reverseTransitionDrawableByStatus();
-                //start/stop the animation
+                //start/stop the thumb animation
                 runThumbAnimation();
             }
         });
     }
 
 
+    /*field with a status when locked (unlocked)*/
+    private void initTextFieldForSlider(){
+        mSliderStatusDescription.setTypeface(null, Typeface.BOLD);
+        mSliderStatusDescription.setTextSize(mTextSize);
+        mSliderStatusDescription.setTextColor(mTextColor);
+    }
 
-    /**
-     * CHANGE THE THUMB IMAGE WHEN THE PROGRESS 100% OR 0%
-     */
+    /*set visual parameters after status changing*/
     private void upDateSlider(){
         //set background when the slider progress 0 or 100
-        setBackgroundWhenStatic();
+        setSliderParamWhenStatic();
         //set padding
         mSlider.setPadding(mBorderWidth, mBorderWidth, mBorderWidth, mBorderWidth);
         // /set the thumb to slider
@@ -336,6 +307,7 @@ public class LockUnlockSlider extends RelativeLayout {
         mSlider.setThumbOffset(0);
     }
 
+    /*overdrawing the thumb after updating*/
     private LayerDrawable changeThumb(){
         //circle
         GradientDrawable gd = new GradientDrawable();
@@ -352,7 +324,6 @@ public class LockUnlockSlider extends RelativeLayout {
         gd.setSize(dpToPx(mThumbWidth), dpToPx(mThumbHeight));
         // Set gradient radius
         gd.setGradientRadius(dpToPx(70));
-
         // set the thumb icon by bool status
         Bitmap mTHUMB_BITMAP;
         if(mSliderStatus){
@@ -360,7 +331,6 @@ public class LockUnlockSlider extends RelativeLayout {
         }else {
             mTHUMB_BITMAP = ((BitmapDrawable) mThumbBack).getBitmap();
         }
-
         //result thumb drawable
         Drawable thumb = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(mTHUMB_BITMAP, dpToPx(24), dpToPx(24), true));
         InsetDrawable thumb_with_padding= new InsetDrawable(thumb,dpToPx(15),dpToPx(15),dpToPx(15),dpToPx(15));
@@ -369,37 +339,31 @@ public class LockUnlockSlider extends RelativeLayout {
     }
 
 
-    /**
-     * SET PROGRESS WHEN THE SLIDER INITS FIRST TIME
-     */
+    /*set lock or unlock status when running first time*/
     private void checkPrimarySliderProgress(){
         if(mSliderStatus) {
             mSlider.setProgress(MAX_VALUE);
         }else {
-            mSlider.setProgress(0);
+            mSlider.setProgress(MIN_VALUE);
         }
     }
 
-    /**
-     * BACKGROUND FOR THE STATIC MODE (0 OR 100%)
-     */
-    private void setBackgroundWhenStatic(){
-        mTextHint.setVisibility(View.VISIBLE);
+    /*visual parameters when slider progress 100% or 0%*/
+    private void setSliderParamWhenStatic(){
+        mSliderStatusDescription.setVisibility(View.VISIBLE);
         mBackgroundWhenLock = createDrawableForBackground(mBackgroundAngleWhenLock, mBackgroundColorWhenLock, mBorderWidth, mBorderColor);
         mBackgroundWhenUnlock = createDrawableForBackground(mBackgroundAngleWhenUnlock, mBackgroundColorWhenUnlock, mBorderWidth, mBorderColor);
 
         if(mSliderStatus) {
-            mTextHint.setText(mTextForSliderWhenUnlock);
-            setBackgroundStatic(mBackgroundWhenUnlock);
+            mSliderStatusDescription.setText(mTextForSliderWhenLock);
+            mViewBackground.setBackground(mBackgroundWhenUnlock);
         }else {
-            mTextHint.setText(mTextForSliderWhenLock);
-            setBackgroundStatic(mBackgroundWhenLock);
+            mSliderStatusDescription.setText(mTextForSliderWhenUnlock);
+            mViewBackground.setBackground(mBackgroundWhenLock);
         }
     }
 
-    /**
-     * START ANIMATION WHEN THE PROGRESS >50%
-     */
+    /*animation when > progress 50%*/
     private void startTransitionDrawableByStatus() {
         if (mSliderStatus) {
             mTransitionForBackGround = new TransitionDrawable(new Drawable[]{mBackgroundWhenUnlock, mBackgroundWhenLock});
@@ -412,31 +376,26 @@ public class LockUnlockSlider extends RelativeLayout {
         }
     }
 
-    /**
-     * START ANIMATION WHEN THE PROGRESS < 50%
-     */
+    /*animation when < progress 50%*/
     private void reverseTransitionDrawableByStatus(){
-        if(!mSliderStatus && mSlider.getProgress() < MAX_VALUE/2){
+        if(!mSliderStatus && mSlider.getProgress() < MAX_VALUE /2){
             mTransitionForBackGround.reverseTransition(ANIM_DURATION);
         }
-        else if(mSliderStatus && mSlider.getProgress() > MAX_VALUE/2){
+        else if(mSliderStatus && mSlider.getProgress() > MAX_VALUE /2){
             mTransitionForBackGround.reverseTransition(ANIM_DURATION);
         }
     }
 
-    /**
-     * SET THE ANIMATION PARAMETERS FOR THUMB
-     */
+    /*animation for completing of the slider progress
+    * 50% > progress < 100% return to right
+    * 0% > progress < 50% return to left*/
     private void runThumbAnimation(){
-
         if (mAnimatorForThumb !=null) mAnimatorForThumb.cancel();
-
-        int duration = ANIM_DURATION;
         mSliderProgress = mSlider.getProgress();
 
-        if(mSliderProgress > MAX_VALUE/2){
+        if(mSliderProgress > MAX_VALUE /2){
             mAnimatorForThumb = ValueAnimator.ofInt(mSliderProgress, mSlider.getMax());
-            mAnimatorForThumb.setDuration(duration);
+            mAnimatorForThumb.setDuration(ANIM_DURATION);
             mAnimatorForThumb.setInterpolator(new AccelerateInterpolator());
             mAnimatorForThumb.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
@@ -447,8 +406,8 @@ public class LockUnlockSlider extends RelativeLayout {
             });
             mAnimatorForThumb.start();
         }else {
-            mAnimatorForThumb = ValueAnimator.ofInt(mSliderProgress,  0);
-            mAnimatorForThumb.setDuration(duration);
+            mAnimatorForThumb = ValueAnimator.ofInt(mSliderProgress,  MIN_VALUE);
+            mAnimatorForThumb.setDuration(ANIM_DURATION);
             mAnimatorForThumb.setInterpolator(new AccelerateInterpolator());
             mAnimatorForThumb.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
@@ -461,9 +420,7 @@ public class LockUnlockSlider extends RelativeLayout {
         }
     }
 
-    /**
-     * SET TRANSPARENT BACKGROUND FOR SEEKBAR
-     */
+
     private void setSeekBarBackgroundTransparent(){
         //progress
         Drawable shape = createDrawableForBackground(mThumbAngle, Color.TRANSPARENT, 0, Color.TRANSPARENT);
@@ -476,12 +433,12 @@ public class LockUnlockSlider extends RelativeLayout {
     }
 
     /**
-     * Create the shape for setting a backgrounds
+     * Create the shape for the slider background when status changed
      * @param radius an angle of ste shape (default 45)
      * @param body_color background of the shape
-     * @param stroke_weight background of the stroke
+     * @param stroke_weight weight of the stroke
      * @param stroke_color color if the stroke
-     * @return custom shape
+     * @return (Drawable) shape
      */
     private Drawable createDrawableForBackground(int radius, int body_color, int stroke_weight, int stroke_color){
         GradientDrawable shape = new GradientDrawable();
@@ -492,28 +449,15 @@ public class LockUnlockSlider extends RelativeLayout {
         return shape;
     }
 
-    /**
-     * SET BACKGROUND FOR STATIC SHAPES
-     * @param mBackgroundStatic
-     */
-    private void setBackgroundStatic(Drawable mBackgroundStatic){
-        mViewBackground.setBackground(mBackgroundStatic);
-    }
 
-    /**
-     * TRANSFORMATE FROM PIXELS TO DP
-     * @param dp
-     * @return
-     */
     private int dpToPx(int dp)  {
         float density = getResources().getDisplayMetrics().density;
         return Math.round((float)dp * density);
     }
 
 
-    public static interface OnLockUnlockListener {
+    public interface OnLockUnlockListener {
         void onLock();
         void onUnlock();
     }
-
 }

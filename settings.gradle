@@ -1,1 +1,1 @@
-include ':app', ':lockunlockslider2'
+include ':app', ':lockunlockslider'

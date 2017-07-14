@@ -26,7 +26,7 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
 
-    compile project (':lockunlockslider2')
+    compile project (':lockunlockslider')
 
     testCompile 'junit:junit:4.12'
 }
