@@ -10,6 +10,9 @@ import ru.a3technology.lockunlockslider.LockUnlockSlider;
 
 public class MainActivity extends AppCompatActivity {
 
+    private final static String LOCKED = "Locked";
+    private final static String UNLOCKED = "UnLocked";
+
     //set primary boolean status for the slider
     private boolean mPrimaryStatusForSlider = true;
     private LockUnlockSlider mLockUnlockSlider;
@@ -23,12 +26,12 @@ public class MainActivity extends AppCompatActivity {
         mLockUnlockSlider.setOnLockUnlockListener(new LockUnlockSlider.OnLockUnlockListener() {
             @Override
             public void onLock() {
-                Toast.makeText(MainActivity.this, "Locked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, LOCKED, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onUnlock() {
-                Toast.makeText(MainActivity.this, "UnLocked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, UNLOCKED, Toast.LENGTH_SHORT).show();
             }
         });
 
