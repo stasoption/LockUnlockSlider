@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="lockUnlockSlider">
+        <attr name="status" format="boolean" />
+        <attr name="thumbAngle" format="integer"/>
+        <attr name="thumbHeight" format="integer"/>
+        <attr name="thumbWidth" format="integer"/>
+        <attr name="colorThumb1" format="integer"/>
+        <attr name="colorThumb2" format="integer"/>
+        <attr name="imageThumbWhenLock" format="integer"/>
+        <attr name="imageThumbWhenUnLock" format="integer"/>
+        <attr name="borderWidth" format="integer"/>
+        <attr name="borderColor" format="integer"/>
+        <attr name="angle" format="integer"/>
+        <attr name="backgroundWhenLock" format="integer"/>
+        <attr name="backgroundWhenUnLock" format="integer"/>
+        <attr name="textWhenLock" format="string"/>
+        <attr name="textWhenUnLock" format="string"/>
+        <attr name="textSize" format="integer"/>
+        <attr name="textColor" format="integer"/>
+    </declare-styleable>
+</resources>

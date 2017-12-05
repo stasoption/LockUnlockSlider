@@ -2,6 +2,7 @@ package ru.a3technology.lockunlockslider;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -56,8 +57,9 @@ public class LockUnlockSlider extends RelativeLayout {
     private int mTextSize, mTextColor;
     //for the slider background
     private Drawable mBackgroundWhenLock, mBackgroundWhenUnlock;
-    private int mBackgroundAngleWhenLock, mBackgroundColorWhenLock;
-    private int mBackgroundAngleWhenUnlock, mBackgroundColorWhenUnlock;
+    private int mAngle;
+    private int mBackgroundColorWhenLock;
+    private int mBackgroundColorWhenUnlock;
     //stroke width
     private int mBorderWidth, mBorderColor;
 
@@ -79,106 +81,9 @@ public class LockUnlockSlider extends RelativeLayout {
         this.mOnLockUnlockListener = listener;
     }
 
-    /*user parameters*/
-    public void setSliderStatus(boolean status) {
-        mSliderStatus = status;
-        checkPrimarySliderProgress();
-    }
-
-    public void setThumbWidth(int width){
-        mThumbWidth = width;
-    }
-
-    public void setThumbHeight(int height){
-        mThumbHeight = height;
-    }
-
-    public void setGradientForThumb(int color_from, int color_to){
-        mThumbColor1 = color_from;
-        mThumbColor2 = color_to;
-    }
-
-    public void setBorderWidth(int width){
-        mBorderWidth = width;
-    }
-    private int getBorderWidth(){
-        return mBorderWidth;
-    }
-
-    public void setBorderColor(int color){
-        mBorderColor = color;
-    }
-    private int getBorderColor(){
-        return mBorderColor;
-    }
-
-    public void setBackgroundWhenLock(int angle, int background_color){
-        mBackgroundAngleWhenLock = dpToPx(angle);
-        mBackgroundColorWhenLock = background_color;
-        mBackgroundWhenLock = createDrawableForBackground(
-                mBackgroundAngleWhenLock,
-                mBackgroundColorWhenLock,
-                getBorderWidth(),
-                getBorderColor()
-        );
-    }
-
-    public void setBackgroundWhenUnLock(int angle, int background_color){
-        mBackgroundAngleWhenUnlock = dpToPx(angle);
-        mBackgroundColorWhenUnlock = background_color;
-        mBackgroundWhenUnlock = createDrawableForBackground(
-                mBackgroundAngleWhenUnlock,
-                mBackgroundColorWhenUnlock,
-                getBorderWidth(),
-                getBorderColor()
-        );
-    }
-
-    public void setThumbAngle(int thumb_angle){
-        mThumbAngle = dpToPx(thumb_angle);
-    }
-
-    public void setTextWhenLock(String text){
-        mTextForSliderWhenLock = text;
-    }
-
-    public void setTextWhenUnLock(String text){
-        mTextForSliderWhenUnlock = text;
-    }
-
-    public void setTextSize(int size){
-        mTextSize = size;
-    }
-
-    public void setTextColor(int color){
-        mTextColor = color;
-    }
-
-    public void setImageThumbWhenLock(Drawable img){
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN){
-            mThumbBack = img;
-        }else {
-            mThumbBack = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_lock_lock, null);
-        }
-    }
-
-    public void setImageThumbWhenUnLock(Drawable img){
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN){
-            mThumbForward = img;
-        }else {
-            mThumbForward = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_lock_lock, null);
-        }
-    }
-
-    public void build(){
-        setSliderParameters();
-    }
-
-
     private void init(Context context, AttributeSet attrs) throws Exception{
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.lock_unlock_slider, this, true);
-
         // layout for slider background
         mViewBackground = (RelativeLayout) findViewById(R.id.view_background);
         //slider
@@ -187,10 +92,65 @@ public class LockUnlockSlider extends RelativeLayout {
         mSliderStatusDescription = (TextView) findViewById(R.id.seekBar_hint);
         //set max value
         mSlider.setMax(MAX_VALUE);
-        //set progress when firs time
-        checkPrimarySliderProgress();
         //default values for slider
         setDefaultParametersForSlider();
+
+        //user parameters
+        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.lockUnlockSlider, 0, 0);
+        if(a != null){
+            mSliderStatus = a.getBoolean(R.styleable.lockUnlockSlider_status, false);
+            mThumbAngle = checkIntValue(mThumbAngle, a.getInteger(R.styleable.lockUnlockSlider_thumbAngle, 0));
+            mThumbHeight = checkIntValue(mThumbHeight, a.getInteger(R.styleable.lockUnlockSlider_thumbHeight, 0));
+            mThumbWidth = checkIntValue(mThumbWidth, a.getInteger(R.styleable.lockUnlockSlider_thumbWidth, 0));
+            mThumbColor1 = checkIntValue(mThumbColor1, a.getInteger(R.styleable.lockUnlockSlider_colorThumb1, 0));
+            mThumbColor2 = checkIntValue(mThumbColor2, a.getInteger(R.styleable.lockUnlockSlider_colorThumb2, 0));
+            mBorderWidth = checkIntValue(mBorderWidth, a.getInteger(R.styleable.lockUnlockSlider_borderWidth, 0));
+            mBorderColor = checkIntValue(mBorderColor, a.getInteger(R.styleable.lockUnlockSlider_borderColor, 0));
+            mAngle = checkIntValue(mAngle, a.getInteger(R.styleable.lockUnlockSlider_angle, 0));
+            mAngle = checkIntValue(mAngle, a.getInteger(R.styleable.lockUnlockSlider_angle, 0));
+            mBackgroundColorWhenLock = checkIntValue(mBackgroundColorWhenLock, a.getInteger(R.styleable.lockUnlockSlider_backgroundWhenLock, 0));
+            mBackgroundColorWhenUnlock = checkIntValue(mBackgroundColorWhenUnlock, a.getInteger(R.styleable.lockUnlockSlider_backgroundWhenLock, 0));
+            mTextForSliderWhenLock = checkText(a.getString(R.styleable.lockUnlockSlider_textWhenLock));
+            mTextForSliderWhenUnlock = checkText(a.getString(R.styleable.lockUnlockSlider_textWhenUnLock));
+
+            mTextSize = checkIntValue(mTextSize, a.getInteger(R.styleable.lockUnlockSlider_textSize, 0));
+            mTextColor = checkIntValue(mTextColor, a.getInteger(R.styleable.lockUnlockSlider_textColor, 0));
+
+            int thumbForward = a.getInteger(R.styleable.lockUnlockSlider_imageThumbWhenLock, 0);
+            if(thumbForward != 0){
+                mThumbForward = ResourcesCompat.getDrawable(getResources(), thumbForward, null);
+            }
+            int thumbBack = a.getInteger(R.styleable.lockUnlockSlider_imageThumbWhenLock, 0);
+            if(thumbForward != 0){
+                mThumbBack = ResourcesCompat.getDrawable(getResources(), thumbBack, null);
+            }
+        }
+
+        if(mSliderStatus) {
+            mSlider.setProgress(MAX_VALUE);
+        }else {
+            mSlider.setProgress(MIN_VALUE);
+        }
+
+        mSliderStatusDescription.setTypeface(null, Typeface.BOLD);
+        mSliderStatusDescription.setTextSize(mTextSize);
+        mSliderStatusDescription.setTextColor(mTextColor);
+
+        start();
+    }
+
+    private int checkIntValue(int source, int value){
+        if(value != 0){
+            source = value;
+        }
+        return source;
+    }
+
+    private String checkText(String value){
+        if(value == null){
+           return "";
+        }
+        return value;
     }
 
     /*default slider parameters when init first time*/
@@ -209,29 +169,29 @@ public class LockUnlockSlider extends RelativeLayout {
         mTextColor = Color.WHITE;
 
         //default background colors
-        mBackgroundAngleWhenLock = dpToPx(45);
+        mAngle = dpToPx(45);
         mBackgroundColorWhenLock = Color.GRAY;
         mBorderWidth = 1;
         mBorderColor = Color.GRAY;
         mBackgroundWhenLock = createDrawableForBackground(
-                mBackgroundAngleWhenLock,
+                mAngle,
                 mBackgroundColorWhenLock,
                 mBorderWidth,
                 mBorderColor);
 
-        mBackgroundAngleWhenUnlock = dpToPx(45);
+        mAngle = dpToPx(45);
         mBackgroundColorWhenUnlock = Color.GREEN;
         mBorderWidth = 1;
         mBorderColor = Color.GRAY;
         mBackgroundWhenUnlock = createDrawableForBackground(
-                mBackgroundAngleWhenUnlock,
+                mAngle,
                 mBackgroundColorWhenUnlock,
                 mBorderWidth,
                 mBorderColor);
 
         //default thumb
-        mThumbForward = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_lock_open_black_24dp, null);
-        mThumbBack = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_lock_outline_black_24dp, null);
+        mThumbForward = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_lock_open_black_24dp, null);
+        mThumbBack = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_lock_outline_black_24dp, null);
 
         mThumbColor1 = Color.WHITE;
         mThumbColor2 = Color.GRAY;
@@ -240,11 +200,8 @@ public class LockUnlockSlider extends RelativeLayout {
     /**
      * SET MAIN THE SLIDER LOGIC
      */
-    private void setSliderParameters(){
-        //parameters for the status field
-        initTextFieldForSlider();
-
-        upDateSlider();
+    private void start(){
+        updateSlider();
 
         mSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -261,7 +218,7 @@ public class LockUnlockSlider extends RelativeLayout {
                             if (mOnLockUnlockListener != null) mOnLockUnlockListener.onUnlock();
                             break;
                     }
-                   upDateSlider();
+                   updateSlider();
                }
             }
 
@@ -282,16 +239,8 @@ public class LockUnlockSlider extends RelativeLayout {
         });
     }
 
-
-    /*field with a status when locked (unlocked)*/
-    private void initTextFieldForSlider(){
-        mSliderStatusDescription.setTypeface(null, Typeface.BOLD);
-        mSliderStatusDescription.setTextSize(mTextSize);
-        mSliderStatusDescription.setTextColor(mTextColor);
-    }
-
     /*set visual parameters after status changing*/
-    private void upDateSlider(){
+    private void updateSlider(){
         //set background when the slider progress 0 or 100
         setSliderParamWhenStatic();
         //set padding
@@ -332,21 +281,11 @@ public class LockUnlockSlider extends RelativeLayout {
         return new LayerDrawable(new Drawable[]{gd,thumb_with_padding});
     }
 
-
-    /*set lock or unlock status when running first time*/
-    private void checkPrimarySliderProgress(){
-        if(mSliderStatus) {
-            mSlider.setProgress(MAX_VALUE);
-        }else {
-            mSlider.setProgress(MIN_VALUE);
-        }
-    }
-
     /*visual parameters when slider progress 100% or 0%*/
     private void setSliderParamWhenStatic(){
         mSliderStatusDescription.setVisibility(View.VISIBLE);
-        mBackgroundWhenLock = createDrawableForBackground(mBackgroundAngleWhenLock, mBackgroundColorWhenLock, mBorderWidth, mBorderColor);
-        mBackgroundWhenUnlock = createDrawableForBackground(mBackgroundAngleWhenUnlock, mBackgroundColorWhenUnlock, mBorderWidth, mBorderColor);
+        mBackgroundWhenLock = createDrawableForBackground(mAngle, mBackgroundColorWhenLock, mBorderWidth, mBorderColor);
+        mBackgroundWhenUnlock = createDrawableForBackground(mAngle, mBackgroundColorWhenUnlock, mBorderWidth, mBorderColor);
 
         if(mSliderStatus) {
             mSliderStatusDescription.setText(mTextForSliderWhenLock);
