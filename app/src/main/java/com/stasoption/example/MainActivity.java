@@ -2,11 +2,11 @@ package com.stasoption.example;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.util.Log;
 
 import ru.a3technology.lockunlockslider.LockUnlockSlider;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LockUnlockSlider.OnLockUnlockListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,18 +14,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         LockUnlockSlider lockUnlockSlider = (LockUnlockSlider) findViewById(R.id.lockUnlockSlider);
-        lockUnlockSlider.setOnLockUnlockListener(new LockUnlockSlider.OnLockUnlockListener() {
-            @Override
-            public void onLock() {
-                Toast.makeText(MainActivity.this, "Locked", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onUnlock() {
-                Toast.makeText(MainActivity.this, "UnLocked", Toast.LENGTH_SHORT).show();
-            }
-        });
+        lockUnlockSlider.setOnLockUnlockListener(this);
     }
 
+    @Override
+    public void onLock() {
+        Log.d("LockUnlockSlider", "Locked");
+    }
 
+    @Override
+    public void onUnlock() {
+        Log.d("LockUnlockSlider", "UnLocked");
+    }
 }

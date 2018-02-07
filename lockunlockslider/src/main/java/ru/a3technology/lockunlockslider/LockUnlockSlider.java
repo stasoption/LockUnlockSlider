@@ -106,30 +106,27 @@ public class LockUnlockSlider extends RelativeLayout {
             mBorderWidth = checkIntValue(mBorderWidth, a.getInteger(R.styleable.lockUnlockSlider_borderWidth, 0));
             mBorderColor = checkIntValue(mBorderColor, a.getInteger(R.styleable.lockUnlockSlider_borderColor, 0));
             mAngle = checkIntValue(mAngle, a.getInteger(R.styleable.lockUnlockSlider_angle, 0));
-            mAngle = checkIntValue(mAngle, a.getInteger(R.styleable.lockUnlockSlider_angle, 0));
             mBackgroundColorWhenLock = checkIntValue(mBackgroundColorWhenLock, a.getInteger(R.styleable.lockUnlockSlider_backgroundWhenLock, 0));
-            mBackgroundColorWhenUnlock = checkIntValue(mBackgroundColorWhenUnlock, a.getInteger(R.styleable.lockUnlockSlider_backgroundWhenLock, 0));
+            mBackgroundColorWhenUnlock = checkIntValue(mBackgroundColorWhenUnlock, a.getInteger(R.styleable.lockUnlockSlider_backgroundWhenUnLock, 0));
             mTextForSliderWhenLock = checkText(a.getString(R.styleable.lockUnlockSlider_textWhenLock));
             mTextForSliderWhenUnlock = checkText(a.getString(R.styleable.lockUnlockSlider_textWhenUnLock));
-
             mTextSize = checkIntValue(mTextSize, a.getInteger(R.styleable.lockUnlockSlider_textSize, 0));
             mTextColor = checkIntValue(mTextColor, a.getInteger(R.styleable.lockUnlockSlider_textColor, 0));
 
-            int thumbForward = a.getInteger(R.styleable.lockUnlockSlider_imageThumbWhenLock, 0);
-            if(thumbForward != 0){
-                mThumbForward = ResourcesCompat.getDrawable(getResources(), thumbForward, null);
-            }
-            int thumbBack = a.getInteger(R.styleable.lockUnlockSlider_imageThumbWhenLock, 0);
-            if(thumbForward != 0){
-                mThumbBack = ResourcesCompat.getDrawable(getResources(), thumbBack, null);
-            }
+            if(a.getDrawable(R.styleable.lockUnlockSlider_imageThumbWhenLock)!=null)
+                mThumbForward = a.getDrawable(R.styleable.lockUnlockSlider_imageThumbWhenLock);
+            if(a.getDrawable(R.styleable.lockUnlockSlider_imageThumbWhenLock)!=null)
+                mThumbBack = a.getDrawable(R.styleable.lockUnlockSlider_imageThumbWhenLock);
         }
 
-        mSlider.setProgress(mSliderStatus ? MAX_VALUE : MIN_VALUE);
+
 
         mSliderStatusDescription.setTypeface(null, Typeface.BOLD);
         mSliderStatusDescription.setTextSize(mTextSize);
         mSliderStatusDescription.setTextColor(mTextColor);
+        mSliderStatusDescription.setText(mSliderStatus ? mTextForSliderWhenUnlock : mTextForSliderWhenLock);
+
+        mSlider.setProgress(mSliderStatus ? MAX_VALUE : MIN_VALUE);
 
         initializedSlider();
     }
@@ -157,9 +154,6 @@ public class LockUnlockSlider extends RelativeLayout {
         mThumbWidth = 60;
         //default form for shape
         mThumbAngle = dpToPx(45);
-        //default text on the slider
-        mTextForSliderWhenUnlock = "Lock";
-        mTextForSliderWhenLock = "Unlock";
         mTextSize = 12;
         mTextColor = Color.WHITE;
 
@@ -192,9 +186,6 @@ public class LockUnlockSlider extends RelativeLayout {
         mThumbColor2 = Color.GRAY;
     }
 
-    /**
-     * SET MAIN THE SLIDER LOGIC
-     */
     private void initializedSlider(){
         updateSlider();
 
@@ -377,7 +368,6 @@ public class LockUnlockSlider extends RelativeLayout {
         return shape;
     }
 
-
     private int dpToPx(int dp)  {
         float density = getResources().getDisplayMetrics().density;
         return Math.round((float)dp * density);
@@ -385,7 +375,9 @@ public class LockUnlockSlider extends RelativeLayout {
 
 
     public interface OnLockUnlockListener {
+
         void onLock();
+
         void onUnlock();
     }
 }

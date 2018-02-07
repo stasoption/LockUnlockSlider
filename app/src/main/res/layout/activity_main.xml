@@ -6,16 +6,32 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="15dp"
+    android:padding="16dp"
+    android:gravity="center"
     tools:context="com.stasoption.example.MainActivity"
     android:background="@android:color/holo_blue_bright">
 
 
-
     <ru.a3technology.lockunlockslider.LockUnlockSlider
         android:id="@+id/lockUnlockSlider"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:status="true"
+        app:thumbAngle="10"
+        app:thumbHeight="80"
+        app:thumbWidth="100"
+        app:colorThumb1="#4A148C"
+        app:colorThumb2="#D50000"
+        app:imageThumbWhenLock="@drawable/ic_lock_open_black_24dp"
+        app:imageThumbWhenUnLock="@drawable/ic_lock_open_black_24dp"
+        app:borderWidth="20"
+        app:borderColor="#5D4037"
+        app:angle="10"
+        app:backgroundWhenLock="#0D47A1"
+        app:backgroundWhenUnLock="#CDDC39"
+        app:textWhenLock="Locked"
+        app:textWhenUnLock="UnLocked"
+        app:textSize="18"
+        app:textColor="#000000"/>
 
 </LinearLayout>
