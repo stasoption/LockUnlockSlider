@@ -131,20 +131,6 @@ public class LockUnlockSlider extends RelativeLayout {
         initializedSlider();
     }
 
-    private int checkIntValue(int source, int value){
-        if(value != 0){
-            source = value;
-        }
-        return source;
-    }
-
-    private String checkText(String value){
-        if(value == null){
-           return "";
-        }
-        return value;
-    }
-
     /*default slider parameters when init first time*/
     private void setDefaultParametersForSlider(){
         //set the transparent background
@@ -254,14 +240,12 @@ public class LockUnlockSlider extends RelativeLayout {
         // Set gradient radius
         gd.setGradientRadius(dpToPx(70));
         // set the thumb icon by bool status
-        Bitmap mTHUMB_BITMAP;
-        if(mSliderStatus){
-            mTHUMB_BITMAP = ((BitmapDrawable) mThumbForward).getBitmap();
-        }else {
-            mTHUMB_BITMAP = ((BitmapDrawable) mThumbBack).getBitmap();
-        }
+        Bitmap bitmap = mSliderStatus ?
+                ((BitmapDrawable) mThumbForward).getBitmap() :
+                ((BitmapDrawable) mThumbBack).getBitmap();
+
         //result thumb drawable
-        Drawable thumb = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(mTHUMB_BITMAP, dpToPx(24), dpToPx(24), true));
+        Drawable thumb = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, dpToPx(24), dpToPx(24), true));
         InsetDrawable thumb_with_padding= new InsetDrawable(thumb,dpToPx(15),dpToPx(15),dpToPx(15),dpToPx(15));
         //show icon in shape. Just in the versoin of android > 4.1
         return new LayerDrawable(new Drawable[]{gd,thumb_with_padding});
@@ -371,6 +355,20 @@ public class LockUnlockSlider extends RelativeLayout {
     private int dpToPx(int dp)  {
         float density = getResources().getDisplayMetrics().density;
         return Math.round((float)dp * density);
+    }
+
+    private int checkIntValue(int source, int value){
+        if(value != 0){
+            source = value;
+        }
+        return source;
+    }
+
+    private String checkText(String value){
+        if(value == null){
+            return "";
+        }
+        return value;
     }
 
 

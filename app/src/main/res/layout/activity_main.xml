@@ -11,8 +11,12 @@
     tools:context="com.stasoption.example.MainActivity"
     android:background="@android:color/holo_blue_bright">
 
-
     <ru.a3technology.lockunlockslider.LockUnlockSlider
+        android:id="@+id/lockUnlockSlider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+   <!-- <ru.a3technology.lockunlockslider.LockUnlockSlider
         android:id="@+id/lockUnlockSlider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,6 +36,6 @@
         app:textWhenLock="Locked"
         app:textWhenUnLock="UnLocked"
         app:textSize="18"
-        app:textColor="#000000"/>
+        app:textColor="#000000"/>-->
 
 </LinearLayout>
