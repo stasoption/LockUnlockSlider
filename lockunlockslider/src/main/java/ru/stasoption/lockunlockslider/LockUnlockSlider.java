@@ -1,4 +1,4 @@
-package ru.a3technology.lockunlockslider;
+package ru.stasoption.lockunlockslider;
 
 import android.animation.ValueAnimator;
 import android.content.Context;

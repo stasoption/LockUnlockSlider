@@ -1,4 +1,4 @@
-package ru.a3technology.lockunlockslider;
+package ru.stasoption.lockunlockslider;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
