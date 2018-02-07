@@ -13,7 +13,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.TransitionDrawable;
-import android.os.Build;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -126,17 +125,13 @@ public class LockUnlockSlider extends RelativeLayout {
             }
         }
 
-        if(mSliderStatus) {
-            mSlider.setProgress(MAX_VALUE);
-        }else {
-            mSlider.setProgress(MIN_VALUE);
-        }
+        mSlider.setProgress(mSliderStatus ? MAX_VALUE : MIN_VALUE);
 
         mSliderStatusDescription.setTypeface(null, Typeface.BOLD);
         mSliderStatusDescription.setTextSize(mTextSize);
         mSliderStatusDescription.setTextColor(mTextColor);
 
-        start();
+        initializedSlider();
     }
 
     private int checkIntValue(int source, int value){
@@ -200,7 +195,7 @@ public class LockUnlockSlider extends RelativeLayout {
     /**
      * SET MAIN THE SLIDER LOGIC
      */
-    private void start(){
+    private void initializedSlider(){
         updateSlider();
 
         mSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -225,15 +220,15 @@ public class LockUnlockSlider extends RelativeLayout {
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
                 mSliderStatusDescription.setVisibility(View.INVISIBLE);
-                //start animation when the progress > 50%
+                //initializedSlider animation when the progress > 50%
                 startTransitionDrawableByStatus();
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                //start reverse animation when the progress < 50%
+                //initializedSlider reverse animation when the progress < 50%
                 reverseTransitionDrawableByStatus();
-                //start/stop the thumb animation
+                //initializedSlider/stop the thumb animation
                 runThumbAnimation();
             }
         });

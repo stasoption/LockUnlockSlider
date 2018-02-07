@@ -12,10 +12,8 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:background="@android:color/transparent"
-        android:hint="status"
         android:textColor="#ffffff"
-        android:id="@+id/seekBar_hint"
-        />
+        android:id="@+id/seekBar_hint" />
     <SeekBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
