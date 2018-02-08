@@ -47,7 +47,7 @@ public class LockUnlockSlider extends RelativeLayout {
     //value for thumb animation
     private int mSliderProgress;
     //thumb metrics
-    private int mThumbAngle, mThumbHeight, mThumbWidth;
+    private int mThumbAngle, mThumbSize;
     //thumb a shape and a background (gradient)
     private Drawable mThumbForward, mThumbBack;
     private int mThumbColor1, mThumbColor2;
@@ -99,8 +99,7 @@ public class LockUnlockSlider extends RelativeLayout {
         if(a != null){
             mSliderStatus = a.getBoolean(R.styleable.lockUnlockSlider_status, false);
             mThumbAngle = checkIntValue(mThumbAngle, a.getInteger(R.styleable.lockUnlockSlider_thumbAngle, 0));
-            mThumbHeight = checkIntValue(mThumbHeight, a.getInteger(R.styleable.lockUnlockSlider_thumbHeight, 0));
-            mThumbWidth = checkIntValue(mThumbWidth, a.getInteger(R.styleable.lockUnlockSlider_thumbWidth, 0));
+            mThumbSize = checkIntValue(mThumbSize, a.getInteger(R.styleable.lockUnlockSlider_thumbSize, 0));
             mThumbColor1 = checkIntValue(mThumbColor1, a.getInteger(R.styleable.lockUnlockSlider_colorThumb1, 0));
             mThumbColor2 = checkIntValue(mThumbColor2, a.getInteger(R.styleable.lockUnlockSlider_colorThumb2, 0));
             mBorderWidth = checkIntValue(mBorderWidth, a.getInteger(R.styleable.lockUnlockSlider_borderWidth, 0));
@@ -113,8 +112,8 @@ public class LockUnlockSlider extends RelativeLayout {
             mTextSize = checkIntValue(mTextSize, a.getInteger(R.styleable.lockUnlockSlider_textSize, 0));
             mTextColor = checkIntValue(mTextColor, a.getInteger(R.styleable.lockUnlockSlider_textColor, 0));
 
-            if(a.getDrawable(R.styleable.lockUnlockSlider_imageThumbWhenLock)!=null)
-                mThumbForward = a.getDrawable(R.styleable.lockUnlockSlider_imageThumbWhenLock);
+            if(a.getDrawable(R.styleable.lockUnlockSlider_imageThumbWhenUnLock)!=null)
+                mThumbForward = a.getDrawable(R.styleable.lockUnlockSlider_imageThumbWhenUnLock);
             if(a.getDrawable(R.styleable.lockUnlockSlider_imageThumbWhenLock)!=null)
                 mThumbBack = a.getDrawable(R.styleable.lockUnlockSlider_imageThumbWhenLock);
         }
@@ -136,8 +135,7 @@ public class LockUnlockSlider extends RelativeLayout {
         //set the transparent background
         setSeekBarBackgroundTransparent();
         // setting parameters for slider
-        mThumbHeight = 60;
-        mThumbWidth = 60;
+        mThumbSize = 60;
         //default form for shape
         mThumbAngle = dpToPx(45);
         mTextSize = 12;
@@ -236,7 +234,7 @@ public class LockUnlockSlider extends RelativeLayout {
         // Set N pixels width solid blue color border
         gd.setStroke(1, Color.GRAY);
         // Set GradientDrawable width and height in pixels
-        gd.setSize(dpToPx(mThumbWidth), dpToPx(mThumbHeight));
+        gd.setSize(dpToPx(mThumbSize), dpToPx(mThumbSize));
         // Set gradient radius
         gd.setGradientRadius(dpToPx(70));
         // set the thumb icon by bool status
