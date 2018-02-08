@@ -3,8 +3,7 @@
     <declare-styleable name="lockUnlockSlider">
         <attr name="status" format="boolean" />
         <attr name="thumbAngle" format="integer"/>
-        <attr name="thumbHeight" format="integer"/>
-        <attr name="thumbWidth" format="integer"/>
+        <attr name="thumbSize" format="integer"/>
         <attr name="colorThumb1" format="color"/>
         <attr name="colorThumb2" format="color"/>
         <attr name="imageThumbWhenLock" format="integer"/>
