@@ -23,7 +23,6 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import ru.stasoption.lockunlockslider.R;
 
 /**
  * Created by Stas on 21.12.2016.
