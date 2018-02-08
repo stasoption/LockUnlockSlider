@@ -56,7 +56,7 @@ Custom parameters:
             app:textColor="#ffffff"/>
 ```      
 
-![alt tag](https://vk.com/doc99845152_459161281?hash=a3f04eca0d6a654577&dl=ec82a8c09948db07af)
+![alt tag](https://media.giphy.com/media/l4pTqudfC2LFB7wZ2/giphy.gif)
 
 
 
