@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import ru.stasoption.lockunlockslider.LockUnlockSlider;
+import com.stasoption.lockunlockslider.LockUnlockSlider;
 
 public class MainActivity extends AppCompatActivity implements LockUnlockSlider.OnLockUnlockListener {
 
