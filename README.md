@@ -1,11 +1,8 @@
-# LockUnlockSlider
-
-**LockUnlockSlider** for android has two modes (true/false). 
-Thus it has interface with two methods: onLock(), onUnlock().
+# LockUnlockSlider for Android
 
 ![alt tag](https://68.media.tumblr.com/ff60864ce37188b346b08f25d35baed6/tumblr_inline_oizs58YQQs1u3v231_500.gif)
 
-Also, you can add custom parameters such as background when lock, background when unlock, angle and gradient for the thumb, text for the slider etc.
+You can add some custom parameters such as background when lock and unlock, angle, size and gradient of the thumb, text for the slider when status changed etc.
 
 # How to use:
 
@@ -13,61 +10,54 @@ Also, you can add custom parameters such as background when lock, background whe
 In your XML file, add follow code:
 ```
       <com.stasoption.lockunlockslider.LockUnlockSlider
-              android:id="@+id/lockUnlockSlider"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content" />
+        android:id="@+id/lockUnlockSlider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 ```        
 **Next**<br />
-In your activity, add LockUnlockSlider and override the follow interface
+In your activity:
 
 ```
-      LockUnlockSlider mLockUnlockSlider = (LockUnlockSlider)findViewById(R.id.lockUnlockSlider);
-      mLockUnlockSlider.setOnLockUnlockListener(new LockUnlockSlider.OnLockUnlockListener() {
+      LockUnlockSlider lockUnlockSlider = (LockUnlockSlider) findViewById(R.id.lockUnlockSlider);
+      lockUnlockSlider.setOnLockUnlockListener(new LockUnlockSlider.OnLockUnlockListener() {
             @Override
             public void onLock() {
-                Toast.makeText(MainActivity.this, "Lock", Toast.LENGTH_SHORT).show();
+                Log.d("LockUnlockSlider", "Locked");
             }
 
             @Override
             public void onUnlock() {
-                Toast.makeText(MainActivity.this, "UnLock", Toast.LENGTH_SHORT).show();
+                Log.d("LockUnlockSlider", "UnLocked");
             }
      });
-     
-      mLockUnlockSlider.build();
 ```
       
-Before building you may to set some parameters (OPTIONAL) for slider
+Custom parameters:
 ```
-        mLockUnlockSlider.setSliderStatus(BOOLEAN_STATUS_FOR_SLIDER); //primary boolean status (locked or unlocked)
-        
-        //thumb parameters
-        mLockUnlockSlider.setThumbAngle(5); // angle of the thumb
-        mLockUnlockSlider.setThumbHeight(60); //thumb height
-        mLockUnlockSlider.setThumbWidth(60); //thumb width
-        mLockUnlockSlider.setGradientForThumb(Color.parseColor("#FFA500"), Color.YELLOW); //set background for thumb (gradient or monotone)
-        mLockUnlockSlider.setImageThumbWhenLock(ResourcesCompat.getDrawable(getResources(),android.R.drawable.ic_lock_silent_mode, null)); //set icon for the thumb. param:--
-        mLockUnlockSlider.setImageThumbWhenUnLock(ResourcesCompat.getDrawable(getResources(),android.R.drawable.ic_lock_silent_mode_off, null));//--()
-        
-        //background parameters
-        mLockUnlockSlider.setStrokeWidth(5);
-        mLockUnlockSlider.setStrokeColor(Color.parseColor("#FFA500"));
-        mLockUnlockSlider.setBackgroundWhenLock(5, Color.parseColor("#4B0082")); // set background for screens when lock or unlock. parameters:
-        mLockUnlockSlider.setBackgroundWhenUnLock(5, Color.parseColor("#8A2BE2")); // (angle of the shape, color of background, width of border, color of border)
-        
-        //text parameters
-        mLockUnlockSlider.setTextWhenLock("On"); // text status of slider when lock
-        mLockUnlockSlider.setTextWhenUnLock("Off"); // text status of slider when unlock
-        mLockUnlockSlider.setTextSize(25); // text size on slider
-        mLockUnlockSlider.setTextColor(Color.parseColor("#FFA500")); //text color on slider
-        
-        //init the slider
-        mLockUnlockSlider.build(); //very important parameter!
+      <com.stasoption.lockunlockslider.LockUnlockSlider
+            android:id="@+id/lockUnlockSlider"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            app:status="true"
+            app:thumbAngle="10"
+            app:thumbSize="50"
+            app:colorThumb1="#FFEB3B"
+            app:colorThumb2="#FFEB3B"
+            app:imageThumbWhenLock="@drawable/ic_volume_off_black_24dp"
+            app:imageThumbWhenUnLock="@drawable/ic_volume_on_black_24dp"
+            app:borderWidth="25"
+            app:borderColor="#795548"
+            app:angle="10"
+            app:backgroundWhenLock="#F44336"
+            app:backgroundWhenUnLock="#4CAF50"
+            app:textWhenLock="on"
+            app:textWhenUnLock="off"
+            app:textSize="10"
+            app:textColor="#ffffff"/>
 ```      
 
-![alt tag](https://68.media.tumblr.com/c5a7481a2931e015751cbcb9ec3c3978/tumblr_inline_oj040q7zBw1u3v231_500.gif)
+![alt tag](https://media.giphy.com/media/l4pTqudfC2LFB7wZ2/giphy.gif)
 
-![alt tag](https://68.media.tumblr.com/a7a973977bb49ab76cc43cc8df6c2931/tumblr_inline_oj03emAIt81u3v231_500.gif)
 
 
 
