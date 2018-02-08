@@ -1,4 +1,14 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.8.0'
+    }
+}
 
 android {
     compileSdkVersion 26
@@ -8,7 +18,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.8"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -29,4 +39,15 @@ dependencies {
 
     compile 'com.android.support:appcompat-v7:26.1.0'
     testCompile 'junit:junit:4.12'
+}
+
+
+publish {
+    userOrg = 'whitepyramid'
+    groupId = 'com.github.stasoption'
+    artifactId = 'lockUnlockSlider'
+    publishVersion = '1.0.8'
+    desc = 'slaider for Android'
+    licences = ['MIT']
+    website = 'https://github.com/stasoption/LockUnlockSlider'
 }
