@@ -56,9 +56,8 @@ Custom parameters:
             app:textColor="#ffffff"/>
 ```      
 
-![alt tag](https://68.media.tumblr.com/c5a7481a2931e015751cbcb9ec3c3978/tumblr_inline_oj040q7zBw1u3v231_500.gif)
+![alt tag](https://vk.com/doc99845152_459161281?hash=a3f04eca0d6a654577&dl=ec82a8c09948db07af)
 
-![alt tag](https://68.media.tumblr.com/a7a973977bb49ab76cc43cc8df6c2931/tumblr_inline_oj03emAIt81u3v231_500.gif)
 
 
 
