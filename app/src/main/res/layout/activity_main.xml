@@ -11,12 +11,12 @@
     tools:context="com.stasoption.example.MainActivity"
     android:background="@android:color/holo_blue_bright">
 
-    <!--<ru.stasoption.lockunlockslider.LockUnlockSlider-->
+    <!--<com.stasoption.lockunlockslider.LockUnlockSlider-->
         <!--android:id="@+id/lockUnlockSlider"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="wrap_content" />-->
 
-    <ru.stasoption.lockunlockslider.LockUnlockSlider
+    <com.stasoption.lockunlockslider.LockUnlockSlider
         android:id="@+id/lockUnlockSlider"
         android:layout_width="200dp"
         android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-package ru.stasoption.lockunlockslider;
+package com.stasoption.lockunlockslider;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -22,6 +22,8 @@ import android.view.animation.AccelerateInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import ru.stasoption.lockunlockslider.R;
 
 /**
  * Created by Stas on 21.12.2016.
