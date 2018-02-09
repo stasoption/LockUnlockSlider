@@ -36,5 +36,4 @@
         app:textWhenUnLock="off"
         app:sliderTextSize="10"
         app:sliderTextColor="#ffffff"/>
-
 </LinearLayout>
