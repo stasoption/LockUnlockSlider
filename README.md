@@ -10,10 +10,10 @@ You can add some custom parameters such as background when lock and unlock, angl
 In your XML file, add follow code:
 ```
       <com.stasoption.lockunlockslider.LockUnlockSlider
-        android:id="@+id/lockUnlockSlider"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-```        
+              android:id="@+id/lockUnlockSlider"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content" />
+```
 **Next**<br />
 In your activity:
 
@@ -31,29 +31,29 @@ In your activity:
             }
      });
 ```
-      
+
 Custom parameters:
 ```
       <com.stasoption.lockunlockslider.LockUnlockSlider
-            android:id="@+id/lockUnlockSlider"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            app:status="true"
-            app:thumbAngle="10"
-            app:thumbSize="50"
-            app:colorThumb1="#FFEB3B"
-            app:colorThumb2="#FFEB3B"
-            app:imageThumbWhenLock="@drawable/ic_volume_off_black_24dp"
-            app:imageThumbWhenUnLock="@drawable/ic_volume_on_black_24dp"
-            app:borderWidth="25"
-            app:borderColor="#795548"
-            app:angle="10"
-            app:backgroundWhenLock="#F44336"
-            app:backgroundWhenUnLock="#4CAF50"
-            app:textWhenLock="on"
-            app:textWhenUnLock="off"
-            app:textSize="10"
-            app:textColor="#ffffff"/>
+              android:id="@+id/lockUnlockSlider"
+              android:layout_width="200dp"
+              android:layout_height="wrap_content"
+              app:sliderStatus="false"
+              app:sliderThumbAngle="10"
+              app:sliderThumbSize="50"
+              app:sliderColorThumb1="#FFEB3B"
+              app:sliderColorThumb2="#FFEB3B"
+              app:imageThumbWhenLock="@drawable/ic_volume_off_black_24dp"
+              app:imageThumbWhenUnLock="@drawable/ic_volume_on_black_24dp"
+              app:sliderBorderWidth="25"
+              app:sliderBorderColor="#795548"
+              app:sliderAngle="10"
+              app:backgroundWhenLock="#F44336"
+              app:backgroundWhenUnLock="#4CAF50"
+              app:textWhenLock="on"
+              app:textWhenUnLock="off"
+              app:sliderTextSize="10"
+              app:sliderTextColor="#ffffff"/>
 ```      
 
 ![alt tag](https://media.giphy.com/media/l4pTqudfC2LFB7wZ2/giphy.gif)

@@ -81,6 +81,12 @@ public class LockUnlockSlider extends RelativeLayout {
         this.mOnLockUnlockListener = listener;
     }
 
+    public void setSliderStatus(boolean sliderStatus){
+        mSliderStatus = sliderStatus;
+        mSlider.setProgress(mSliderStatus ? MAX_VALUE : MIN_VALUE);
+        updateSlider();
+    }
+
     private void init(Context context, AttributeSet attrs) throws Exception{
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.lock_unlock_slider, this, true);
@@ -95,31 +101,30 @@ public class LockUnlockSlider extends RelativeLayout {
         //default values for slider
         setDefaultParametersForSlider();
 
+
         //user parameters
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.lockUnlockSlider, 0, 0);
         if(a != null){
-            mSliderStatus = a.getBoolean(R.styleable.lockUnlockSlider_status, false);
-            mThumbAngle = checkIntValue(mThumbAngle, a.getInteger(R.styleable.lockUnlockSlider_thumbAngle, 0));
-            mThumbSize = checkIntValue(mThumbSize, a.getInteger(R.styleable.lockUnlockSlider_thumbSize, 0));
-            mThumbColor1 = checkIntValue(mThumbColor1, a.getInteger(R.styleable.lockUnlockSlider_colorThumb1, 0));
-            mThumbColor2 = checkIntValue(mThumbColor2, a.getInteger(R.styleable.lockUnlockSlider_colorThumb2, 0));
-            mBorderWidth = checkIntValue(mBorderWidth, a.getInteger(R.styleable.lockUnlockSlider_borderWidth, 0));
-            mBorderColor = checkIntValue(mBorderColor, a.getInteger(R.styleable.lockUnlockSlider_borderColor, 0));
-            mAngle = checkIntValue(mAngle, a.getInteger(R.styleable.lockUnlockSlider_angle, 0));
+            mSliderStatus = a.getBoolean(R.styleable.lockUnlockSlider_sliderStatus, false);
+            mThumbAngle = checkIntValue(mThumbAngle, a.getInteger(R.styleable.lockUnlockSlider_sliderThumbAngle, 0));
+            mThumbSize = checkIntValue(mThumbSize, a.getInteger(R.styleable.lockUnlockSlider_sliderThumbSize, 0));
+            mThumbColor1 = checkIntValue(mThumbColor1, a.getInteger(R.styleable.lockUnlockSlider_sliderColorThumb1, 0));
+            mThumbColor2 = checkIntValue(mThumbColor2, a.getInteger(R.styleable.lockUnlockSlider_sliderColorThumb2, 0));
+            mBorderWidth = checkIntValue(mBorderWidth, a.getInteger(R.styleable.lockUnlockSlider_sliderBorderWidth, 0));
+            mBorderColor = checkIntValue(mBorderColor, a.getInteger(R.styleable.lockUnlockSlider_sliderBorderColor, 0));
+            mAngle = checkIntValue(mAngle, a.getInteger(R.styleable.lockUnlockSlider_sliderAngle, 0));
             mBackgroundColorWhenLock = checkIntValue(mBackgroundColorWhenLock, a.getInteger(R.styleable.lockUnlockSlider_backgroundWhenLock, 0));
             mBackgroundColorWhenUnlock = checkIntValue(mBackgroundColorWhenUnlock, a.getInteger(R.styleable.lockUnlockSlider_backgroundWhenUnLock, 0));
             mTextForSliderWhenLock = checkText(a.getString(R.styleable.lockUnlockSlider_textWhenLock));
             mTextForSliderWhenUnlock = checkText(a.getString(R.styleable.lockUnlockSlider_textWhenUnLock));
-            mTextSize = checkIntValue(mTextSize, a.getInteger(R.styleable.lockUnlockSlider_textSize, 0));
-            mTextColor = checkIntValue(mTextColor, a.getInteger(R.styleable.lockUnlockSlider_textColor, 0));
+            mTextSize = checkIntValue(mTextSize, a.getInteger(R.styleable.lockUnlockSlider_sliderTextSize, 0));
+            mTextColor = checkIntValue(mTextColor, a.getInteger(R.styleable.lockUnlockSlider_sliderTextColor, 0));
 
             if(a.getDrawable(R.styleable.lockUnlockSlider_imageThumbWhenUnLock)!=null)
                 mThumbForward = a.getDrawable(R.styleable.lockUnlockSlider_imageThumbWhenUnLock);
             if(a.getDrawable(R.styleable.lockUnlockSlider_imageThumbWhenLock)!=null)
                 mThumbBack = a.getDrawable(R.styleable.lockUnlockSlider_imageThumbWhenLock);
         }
-
-
 
         mSliderStatusDescription.setTypeface(null, Typeface.BOLD);
         mSliderStatusDescription.setTextSize(mTextSize);
@@ -177,7 +182,7 @@ public class LockUnlockSlider extends RelativeLayout {
         mSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-               if(progress == MIN_VALUE || progress == MAX_VALUE){
+                if(progress == MIN_VALUE || progress == MAX_VALUE){
                     switch (progress){
                         case MIN_VALUE:
                             mSliderStatus = false;
@@ -189,8 +194,8 @@ public class LockUnlockSlider extends RelativeLayout {
                             if (mOnLockUnlockListener != null) mOnLockUnlockListener.onUnlock();
                             break;
                     }
-                   updateSlider();
-               }
+                    updateSlider();
+                }
             }
 
             @Override
