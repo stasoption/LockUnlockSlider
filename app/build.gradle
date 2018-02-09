@@ -26,8 +26,8 @@ dependencies {
     })
     implementation 'com.android.support:appcompat-v7:26.1.0'
 
-    compile project (':lockunlockslider')
-//    implementation 'com.github.stasoption:lockUnlockSlider:1.0.8'
+//    compile project (':lockunlockslider')
+    implementation 'com.github.stasoption:lockUnlockSlider:1.0.9'
 
     testImplementation 'junit:junit:4.12'
 }
