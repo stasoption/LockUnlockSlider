@@ -18,7 +18,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
-        versionName "1.0.8"
+        versionName "1.0.9"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -46,8 +46,9 @@ publish {
     userOrg = 'whitepyramid'
     groupId = 'com.github.stasoption'
     artifactId = 'lockUnlockSlider'
-    publishVersion = '1.0.8'
+    publishVersion = '1.0.9'
     desc = 'slaider for Android'
     licences = ['MIT']
     website = 'https://github.com/stasoption/LockUnlockSlider'
 }
+        /*./gradlew clean build bintrayUpload -PbintrayUser=stasoption -PbintrayKey=1f2f269e7a5b50701c5cce09dbd7b0a268e9a6f3 -PdryRun=false*/

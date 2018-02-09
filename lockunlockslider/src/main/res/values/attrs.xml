@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="lockUnlockSlider">
-        <attr name="status" format="boolean" />
-        <attr name="thumbAngle" format="integer"/>
-        <attr name="thumbSize" format="integer"/>
-        <attr name="colorThumb1" format="color"/>
-        <attr name="colorThumb2" format="color"/>
+        <attr name="sliderStatus" format="boolean" />
+        <attr name="sliderThumbAngle" format="integer"/>
+        <attr name="sliderThumbSize" format="integer"/>
+        <attr name="sliderColorThumb1" format="color"/>
+        <attr name="sliderColorThumb2" format="color"/>
         <attr name="imageThumbWhenLock" format="integer"/>
         <attr name="imageThumbWhenUnLock" format="integer"/>
-        <attr name="borderWidth" format="integer"/>
-        <attr name="borderColor" format="color"/>
-        <attr name="angle" format="integer"/>
+        <attr name="sliderBorderWidth" format="integer"/>
+        <attr name="sliderBorderColor" format="color"/>
+        <attr name="sliderAngle" format="integer"/>
         <attr name="backgroundWhenLock" format="color"/>
         <attr name="backgroundWhenUnLock" format="color"/>
         <attr name="textWhenLock" format="string"/>
         <attr name="textWhenUnLock" format="string"/>
-        <attr name="textSize" format="integer"/>
-        <attr name="textColor" format="color"/>
+        <attr name="sliderTextSize" format="integer"/>
+        <attr name="sliderTextColor" format="color"/>
     </declare-styleable>
 </resources>
