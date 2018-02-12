@@ -28,7 +28,7 @@ import android.widget.TextView;
  * Created by Stas on 21.12.2016.
  */
 
-public class LockUnlockSlider extends RelativeLayout {
+public class LockUnlockSlider extends RelativeLayout implements SeekBar.OnSeekBarChangeListener {
 
     private static final int MIN_VALUE = 0;
     private static final int MAX_VALUE = 10000;
@@ -136,10 +136,45 @@ public class LockUnlockSlider extends RelativeLayout {
         initializedSlider();
     }
 
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        if(progress == MIN_VALUE || progress == MAX_VALUE){
+            switch (progress){
+                case MIN_VALUE:
+                    mSliderStatus = false;
+                    if (mOnLockUnlockListener != null)
+                        mOnLockUnlockListener.onLock();
+                    break;
+
+                case MAX_VALUE:
+                    mSliderStatus = true;
+                    if (mOnLockUnlockListener != null)
+                        mOnLockUnlockListener.onUnlock();
+                    break;
+            }
+            updateSlider();
+        }
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+        mSliderStatusDescription.setVisibility(View.INVISIBLE);
+        //initializedSlider animation when the progress > 50%
+        startTransitionDrawableByStatus();
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        //initializedSlider reverse animation when the progress < 50%
+        reverseTransitionDrawableByStatus();
+        //initializedSlider/stop the thumb animation
+        runThumbAnimation();
+    }
+
     /*default slider parameters when init first time*/
     private void setDefaultParametersForSlider(){
         //set the transparent background
-        setSeekBarBackgroundTransparent();
+        setBackgroundTransparent();
         // setting parameters for slider
         mThumbSize = 60;
         //default form for shape
@@ -178,41 +213,7 @@ public class LockUnlockSlider extends RelativeLayout {
 
     private void initializedSlider(){
         updateSlider();
-
-        mSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(progress == MIN_VALUE || progress == MAX_VALUE){
-                    switch (progress){
-                        case MIN_VALUE:
-                            mSliderStatus = false;
-                            if (mOnLockUnlockListener != null) mOnLockUnlockListener.onLock();
-                            break;
-
-                        case MAX_VALUE:
-                            mSliderStatus = true;
-                            if (mOnLockUnlockListener != null) mOnLockUnlockListener.onUnlock();
-                            break;
-                    }
-                    updateSlider();
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                mSliderStatusDescription.setVisibility(View.INVISIBLE);
-                //initializedSlider animation when the progress > 50%
-                startTransitionDrawableByStatus();
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                //initializedSlider reverse animation when the progress < 50%
-                reverseTransitionDrawableByStatus();
-                //initializedSlider/stop the thumb animation
-                runThumbAnimation();
-            }
-        });
+        mSlider.setOnSeekBarChangeListener(this);
     }
 
     /*set visual parameters after status changing*/
@@ -222,12 +223,12 @@ public class LockUnlockSlider extends RelativeLayout {
         //set padding
         mSlider.setPadding(mBorderWidth, mBorderWidth, mBorderWidth, mBorderWidth);
         // /set the thumb to slider
-        mSlider.setThumb(changeThumb());
+        mSlider.setThumb(getThumb());
         mSlider.setThumbOffset(0);
     }
 
     /*overdrawing the thumb after updating*/
-    private LayerDrawable changeThumb(){
+    private LayerDrawable getThumb(){
         //circle
         GradientDrawable gd = new GradientDrawable();
         gd.setColors(new int[]{mThumbColor1, mThumbColor2});
@@ -297,38 +298,30 @@ public class LockUnlockSlider extends RelativeLayout {
     * 50% > progress < 100% return to right
     * 0% > progress < 50% return to left*/
     private void runThumbAnimation(){
-        if (mAnimatorForThumb !=null) mAnimatorForThumb.cancel();
+        if (mAnimatorForThumb != null){
+            mAnimatorForThumb.cancel();
+            mAnimatorForThumb.removeAllUpdateListeners();
+        }
+
         mSliderProgress = mSlider.getProgress();
 
-        if(mSliderProgress > MAX_VALUE /2){
-            mAnimatorForThumb = ValueAnimator.ofInt(mSliderProgress, mSlider.getMax());
-            mAnimatorForThumb.setDuration(ANIM_DURATION);
-            mAnimatorForThumb.setInterpolator(new AccelerateInterpolator());
-            mAnimatorForThumb.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    mSliderProgress = (Integer) animation.getAnimatedValue();
-                    mSlider.setProgress(mSliderProgress);
-                }
-            });
-            mAnimatorForThumb.start();
-        }else {
-            mAnimatorForThumb = ValueAnimator.ofInt(mSliderProgress,  MIN_VALUE);
-            mAnimatorForThumb.setDuration(ANIM_DURATION);
-            mAnimatorForThumb.setInterpolator(new AccelerateInterpolator());
-            mAnimatorForThumb.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    mSliderProgress = (Integer) animation.getAnimatedValue();
-                    mSlider.setProgress(mSliderProgress);
-                }
-            });
-            mAnimatorForThumb.start();
-        }
+        mAnimatorForThumb = ValueAnimator.ofInt(mSliderProgress,
+                mSliderProgress > (MAX_VALUE / 2) ? mSlider.getMax() : MIN_VALUE);
+
+        mAnimatorForThumb.setDuration(ANIM_DURATION);
+        mAnimatorForThumb.setInterpolator(new AccelerateInterpolator());
+        mAnimatorForThumb.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mSliderProgress = (Integer) animation.getAnimatedValue();
+                mSlider.setProgress(mSliderProgress);
+            }
+        });
+        mAnimatorForThumb.start();
     }
 
 
-    private void setSeekBarBackgroundTransparent(){
+    private void setBackgroundTransparent(){
         //progress
         Drawable shape = createDrawableForBackground(mThumbAngle, Color.TRANSPARENT, 0, Color.TRANSPARENT);
         ClipDrawable clip = new ClipDrawable(shape, Gravity.LEFT, ClipDrawable.HORIZONTAL);
@@ -374,6 +367,7 @@ public class LockUnlockSlider extends RelativeLayout {
         }
         return value;
     }
+
 
 
     public interface OnLockUnlockListener {
