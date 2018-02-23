@@ -12,7 +12,7 @@ You can add some custom parameters such as background when lock and unlock, angl
 
 **In your XML file**<br />
 
-```
+```xml
       <com.stasoption.lockunlockslider.LockUnlockSlider
               android:id="@+id/lockUnlockSlider"
               android:layout_width="match_parent"
@@ -21,7 +21,7 @@ You can add some custom parameters such as background when lock and unlock, angl
 
 **In your activity**<br />
 
-```
+```java
       LockUnlockSlider lockUnlockSlider = (LockUnlockSlider) findViewById(R.id.lockUnlockSlider);
       lockUnlockSlider.setOnLockUnlockListener(new LockUnlockSlider.OnLockUnlockListener() {
             @Override
@@ -38,7 +38,7 @@ You can add some custom parameters such as background when lock and unlock, angl
 
 **Custom parameters**<br />
 
-```
+```xml
       <com.stasoption.lockunlockslider.LockUnlockSlider
               android:id="@+id/lockUnlockSlider"
               android:layout_width="200dp"
