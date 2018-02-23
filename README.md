@@ -71,17 +71,6 @@ You can add some custom parameters such as background when lock and unlock, angl
       }
 ```
 
-**Maven**<br />
-
-```
-      <dependency>
-            <groupId>com.github.stasoption</groupId>
-            <artifactId>lockUnlockSlider</artifactId>
-            <version>1.0.9</version>
-            <type>pom</type>
-      </dependency>
-```
-
 ## License
 
       The MIT License (MIT)
